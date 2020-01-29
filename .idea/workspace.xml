@@ -71,7 +71,7 @@
         <entry file="file://$PROJECT_DIR$/src/bind/BindBaseModel.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="24">
-              <caret line="1" column="39" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="39" />
+              <caret line="1" column="39" selection-start-line="1" selection-start-column="39" selection-end-line="1" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -169,15 +169,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1580286941357</updated>
-      <workItem from="1580286943834" duration="8664000" />
+      <workItem from="1580286943834" duration="9263000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8664000" />
+    <option name="totallyTimeSpent" value="9263000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
@@ -242,7 +242,7 @@
     <entry file="file://$PROJECT_DIR$/src/bind/BindBaseModel.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="24">
-          <caret line="1" column="39" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="39" />
+          <caret line="1" column="39" selection-start-line="1" selection-start-column="39" selection-end-line="1" selection-end-column="39" />
         </state>
       </provider>
     </entry>
