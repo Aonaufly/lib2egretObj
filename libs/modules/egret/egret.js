@@ -11044,11 +11044,11 @@ var egret;
             this.dirty();
         };
         /**
-         * Draw a quadratic Bezier curve from the current drawing position to (anchorX, anchorY) using the current line style according to the control points specified by (controlX, controlY). The current drawing position is then set to (anchorX, anchorY).
+         * Draw a quadratic Bezier curve from the current drawing position to (anchorX, anchorY) using the current line style according to the controller points specified by (controlX, controlY). The current drawing position is then set to (anchorX, anchorY).
          * If the curveTo() method is called before the moveTo() method, the default value of the current drawing position is (0, 0). If any of these parameters is missed, calling this method will fail and the current drawing position keeps unchanged.
-         * The drawn curve is a quadratic Bezier curve. A quadratic Bezier curve contains two anchor points and one control point. The curve interpolates the two anchor points and bends to the control point.
-         * @param controlX A number indicating the horizontal position of the control point, relative to the registration point of the parent display object.
-         * @param controlY A number indicating the vertical position of the control point, relative to the registration point of the parent display object.
+         * The drawn curve is a quadratic Bezier curve. A quadratic Bezier curve contains two anchor points and one controller point. The curve interpolates the two anchor points and bends to the controller point.
+         * @param controlX A number indicating the horizontal position of the controller point, relative to the registration point of the parent display object.
+         * @param controlY A number indicating the vertical position of the controller point, relative to the registration point of the parent display object.
          * @param anchorX A number indicating the horizontal position of the next anchor point, relative to the registration point of the parent display object.
          * @param anchorY A number indicating the vertical position of the next anchor point, relative to the registration point of the parent display object.
          * @version Egret 2.4
@@ -11092,11 +11092,11 @@ var egret;
             this.dirty();
         };
         /**
-         * Draws a cubic Bezier curve from the current drawing position to the specified anchor. Cubic Bezier curves consist of two anchor points and two control points. The curve interpolates the two anchor points and two control points to the curve.
-         * @param controlX1 Specifies the first control point relative to the registration point of the parent display the horizontal position of the object.
-         * @param controlY1 Specifies the first control point relative to the registration point of the parent display the vertical position of the object.
-         * @param controlX2 Specify the second control point relative to the registration point of the parent display the horizontal position of the object.
-         * @param controlY2 Specify the second control point relative to the registration point of the parent display the vertical position of the object.
+         * Draws a cubic Bezier curve from the current drawing position to the specified anchor. Cubic Bezier curves consist of two anchor points and two controller points. The curve interpolates the two anchor points and two controller points to the curve.
+         * @param controlX1 Specifies the first controller point relative to the registration point of the parent display the horizontal position of the object.
+         * @param controlY1 Specifies the first controller point relative to the registration point of the parent display the vertical position of the object.
+         * @param controlX2 Specify the second controller point relative to the registration point of the parent display the horizontal position of the object.
+         * @param controlY2 Specify the second controller point relative to the registration point of the parent display the vertical position of the object.
          * @param anchorX Specifies the anchor point relative to the registration point of the parent display the horizontal position of the object.
          * @param anchorY Specifies the anchor point relative to the registration point of the parent display the vertical position of the object.
          * @version Egret 2.4

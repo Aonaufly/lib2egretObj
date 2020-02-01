@@ -1,6 +1,6 @@
 declare namespace RES {
     /**
-     * Version control loading interface
+     * Version controller loading interface
      * @version Egret 2.4
      * @platform Web,Native
      * @includeExample extension/version/VersionControl.ts
@@ -31,7 +31,7 @@ declare namespace RES {
         init(): Promise<any>;
         /**
          * Get the actual URL of the resource file.<br/>
-         * Because this method needs to be called to control the actual version of the URL have the original resource files were changed, so would like to get the specified resource file the actual URL.<br/>
+         * Because this method needs to be called to controller the actual version of the URL have the original resource files were changed, so would like to get the specified resource file the actual URL.<br/>
          * In the development and debugging phase, this method will directly return value passed.
          * @param url Url used in the game
          * @returns Actual loaded url
@@ -52,11 +52,11 @@ declare namespace RES {
         getVirtualUrl(url: string): string;
     }
     /**
-     * Manage version control class
+     * Manage version controller class
      * @version Egret 2.4
      * @platform Web,Native
-     * @event egret.Event.COMPLETE Version control loading is complete when thrown
-     * @event egret.IOErrorEvent.IO_ERROR Version control failed to load when thrown
+     * @event egret.Event.COMPLETE Version controller loading is complete when thrown
+     * @event egret.IOErrorEvent.IO_ERROR Version controller failed to load when thrown
      * @includeExample extension/version/VersionControl.ts
      * @language en_US
      */

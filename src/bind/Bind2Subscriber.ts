@@ -51,7 +51,7 @@ module lib2egret.bind {
             }
         }
 
-        public destory($callback?: ($params?: any) => void, $params?: any): void {
+        public destroy($callback?: ($params?: any) => void, $params?: any): void {
             this.listener(false, this._modAttribute);
             if (this._subClass) this._subClass = null;
             if (this._modClass) this._modClass = null;
