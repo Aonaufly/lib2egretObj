@@ -11,10 +11,21 @@ module lib2egret.mvc {
         }
 
         /**
+         * 开启路由
+         * @param $router
+         */
+        public openRouter($router: string): void {
+            const $routerObj: { module: string, type: Array<string> | string, data: JSON } = this.analysisRouter($router);
+            if ($routerObj) {
+                MvcMgr.Instance.openController($routerObj.module, null, $routerObj);
+            }
+        }
+
+        /**
          * 路由数据解析
          * @param $router
          */
-        public analysisRouter($router: string): { module: string, type: Array<string> | string, data: JSON } {
+        private analysisRouter($router: string): { module: string, type: Array<string> | string, data: JSON } {
             if (!$router || $router.trim().length == 0 || $router.trim().indexOf(`:`) < 0) {
                 console.error(`router ${$router} is null or error!`);
                 return null;

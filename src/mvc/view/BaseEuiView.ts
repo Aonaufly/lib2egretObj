@@ -10,7 +10,7 @@ module lib2egret.mvc {
         protected _eff: BaseUIEffect;
         protected _closeCD: number = null;
         protected _isInit: boolean = false;
-        protected _wait: { data: T, router: string } | { noParams: boolean, router: string } = null;
+        protected _wait: { data: T, router: { module: string, type: Array<string> | string, data: JSON } } | { noParams: boolean, router: { module: string, type: Array<string> | string, data: JSON } } = null;
         private _callback: ($type: string, $data?: any) => void;
         public constructor($parent: egret.DisplayObjectContainer, $data?: egret.XML, $callback?: ($type: string, $data?: any) => void) {
             super();
@@ -52,7 +52,7 @@ module lib2egret.mvc {
                 if (this._wait.hasOwnProperty(`noParams`)) {
                     this.setUI(null, this._wait.router);
                 } else {
-                    this.setUI((this._wait as { data: T, router: string }).data, (this._wait as { data: T, router: string }).router);
+                    this.setUI((this._wait as { data: T, router: { module: string, type: Array<string> | string, data: JSON } }).data, (this._wait as { data: T, router: { module: string, type: Array<string> | string, data: JSON } }).router);
                 }
                 this._wait = null;
             }
@@ -63,7 +63,7 @@ module lib2egret.mvc {
             this.x = (this._parent.width - this.width) >> 1;
             this.y = (this._parent.height - this.height) >> 1;
         }
-        public open($data?: T, $router?: string): void {
+        public open($data?: T, $router?: { module: string, type: Array<string> | string, data: JSON }): void {
             if (this._isInit) {
                 this.setUI($data, $router);
             } else {
@@ -75,7 +75,7 @@ module lib2egret.mvc {
             }
         }
         //设置UI
-        protected setUI($data?: T, $router?: string): void {
+        protected setUI($data?: T, $router?: { module: string, type: Array<string> | string, data: JSON }): void {
             this._data = $data;
             if (this._mask) {
                 this._parent.addChild(this._mask);
@@ -94,11 +94,11 @@ module lib2egret.mvc {
          * 走路由
          * @param $router
          */
-        protected goRouter($router: string): void {
-            if (!$router || $router.trim().length == 0) return;
+        protected goRouter($router: { module: string, type: Array<string> | string, data: JSON }): void {
+            if (!$router) return;
         }
 
-        public abstract update($type: string, $data?: T, $router?: string): Promise<void>;
+        public abstract update($type: string, $data?: T, $router?: { module: string, type: Array<string> | string, data: JSON }): Promise<void>;
 
         private startCloseCD: () => void = (): void => {
             this.listener(true);

@@ -21,8 +21,8 @@ module lib2egret.mvc {
             this._moduleResLoaded = new common.HashMap<IController<any>, boolean>();
         }
 
-        public openController<T>($moduleKey: IController<any> | string, $parent: egret.DisplayObjectContainer, $data?: T, $router?: string): void {
-            let $controller: IMvcController<T> = this.getController<T>($moduleKey, $parent);
+        public openController<T>($moduleKey: IController<any> | string, $data?: T, $router?: { module: string, type: Array<string> | string, data: JSON }): void {
+            let $controller: IMvcController<T> = this.getController<T>($moduleKey);
             $controller.open($data, $router);
         }
 
@@ -83,15 +83,15 @@ module lib2egret.mvc {
          * @param $moduleKey definition
          * @param $parent
          */
-        public getController<T>($moduleKey: IController<T> | string, $parent: egret.DisplayObjectContainer, $notification?: NotificationDispatcher): IMvcController<T> {
+        public getController<T>($moduleKey: IController<T> | string, $notification?: NotificationDispatcher): IMvcController<T> {
             let $definition: IController<T> = this.getDefinition<T>($moduleKey);
             if (this.hasController($definition))
                 return this._list2Controllers.getValue($definition);
-            return this.createController<T>($definition, $parent, $notification);
+            return this.createController<T>($definition, $notification);
         }
 
-        private createController<T>($definition: IController<T>, $parent: egret.DisplayObjectContainer, $notification: NotificationDispatcher): IMvcController<T> {
-            let $controller: IMvcController<T> = new $definition($parent, $notification);
+        private createController<T>($definition: IController<T>, $notification: NotificationDispatcher): IMvcController<T> {
+            let $controller: IMvcController<T> = new $definition($notification);
             this._list2Controllers.add($definition, $controller);
             return $controller;
         }

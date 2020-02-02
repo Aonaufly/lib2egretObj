@@ -54,7 +54,7 @@ module lib2egret.mvc {
             this.x = (this._parent.width - this.width) >> 1;
             this.y = (this._parent.height - this.height) >> 1;
         }
-        public open($data?: T, $router?: string): void {
+        public open($data?: T, $router?: { module: string, type: Array<string> | string, data: JSON }): void {
             this._data = $data;
             if (this._mask) {
                 this._parent.addChild(this._mask);
@@ -70,14 +70,14 @@ module lib2egret.mvc {
             this.goRouter($router);
         }
 
-        public abstract update($type: string, $data?: T, $router?: string): Promise<void>;
+        public abstract update($type: string, $data?: T, $router?: { module: string, type: Array<string> | string, data: JSON }): Promise<void>;
 
         /**
          * 走路由
          * @param $router
          */
-        protected goRouter($router: string): void {
-            if (!$router || $router.trim().length == 0) return;
+        protected goRouter($router: { module: string, type: Array<string> | string, data: JSON }): void {
+            if (!$router) return;
         }
 
         private startCloseCD: () => void = (): void => {

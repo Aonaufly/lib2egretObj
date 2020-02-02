@@ -13,8 +13,7 @@ module lib2egret.mvc {
         protected _notification: NotificationDispatcher;
         private _closeDestroy: boolean = false;
         private _viewConf: egret.XML;
-        public constructor($parent: egret.DisplayObjectContainer, $notification: NotificationDispatcher = null) {
-            this._parent = $parent;
+        public constructor($notification: NotificationDispatcher = null) {
             if ($notification)
                 this._notification = $notification;
             else
@@ -33,6 +32,8 @@ module lib2egret.mvc {
         private analysis2Conf(): void {
             const $conf: egret.XML = this.getModuleConf();
             this._viewConf = MvcConfMgr.Instance.getViewConf($conf);
+            const $layoutIndex: number = parseInt($conf[`$layoutIndex`]);
+            this._parent = common.GameLayoutMgr.Instance.getLayout($layoutIndex);
             this._closeDestroy = $conf[`$closeDestroy`] && +$conf[`$closeDestroy`] == 1;
             const $loadRes: boolean = MvcMgr.Instance.getModuleRes<T>(this._key);
             if (!$loadRes && $conf[`$loading`] && +<number>$conf[`$loading`] == 1) {
@@ -140,7 +141,7 @@ module lib2egret.mvc {
         }
         protected abstract onCmdsHandlers($e: NotificationEvent<any>): void;
 
-        public abstract open($data?: T, router?: string): Promise<void>;
+        public abstract open($data?: T, router?: { module: string, type: Array<string> | string, data: JSON }): Promise<void>;
 
         public close($destroy: boolean = false): Promise<boolean> {
             if (!$destroy) $destroy = this._closeDestroy;
