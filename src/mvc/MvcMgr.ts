@@ -4,6 +4,9 @@ module lib2egret.mvc {
      * @author Aonaufly
      */
     export class MvcMgr extends common.BaseSingle {
+        /**
+         * 获取单例对象句柄
+         */
         public static get Instance(): MvcMgr {
             if (!MvcMgr._instance)
                 MvcMgr._instance = new MvcMgr();
@@ -21,12 +24,18 @@ module lib2egret.mvc {
             this._moduleResLoaded = new common.HashMap<IController<any>, boolean>();
         }
 
+        /**
+         * 打开模块
+         * @param $moduleKey 模块id或者引用对象
+         * @param $data 开启数据
+         * @param $router 路由数据
+         */
         public openController<T>($moduleKey: IController<any> | string, $data?: T, $router?: { module: string, type: Array<string> | string, data: JSON }): void {
             let $controller: IMvcController<T> = this.getController<T>($moduleKey);
             $controller.open($data, $router);
         }
 
-        protected getDefinition<T>($moduleKey: IController<T> | string): IController<T> {
+        private getDefinition<T>($moduleKey: IController<T> | string): IController<T> {
             if (typeof $moduleKey == `string`) {
                 const $conf: egret.XML = MvcConfMgr.Instance.getModulesConf($moduleKey as string);
                 return egret.getDefinitionByName(($conf[`$name`] as string).trim());
@@ -35,6 +44,11 @@ module lib2egret.mvc {
                 return $moduleKey as IController<T>;
         }
 
+        /**
+         * 关闭模块
+         * @param $moduleKey 模块id或者引用对象
+         * @param $isDestroy 是否销毁
+         */
         public closeController<T>($moduleKey: IController<T> | string, $isDestroy: boolean = false): Promise<void> {
             return new Promise<void>((resolve, reject): void => {
                 let $definition: IController<T> = this.getDefinition<T>($moduleKey);
@@ -48,6 +62,10 @@ module lib2egret.mvc {
             });
         }
 
+        /**
+         * 获取模块中的主题
+         * @param $moduleKey 模块id或者引用对象
+         */
         public getNotification4Controller($moduleKey: IController<any> | string): NotificationDispatcher {
             let $definition: IController<any> = this.getDefinition<any>($moduleKey);
             if (this.hasController($definition)) {
@@ -57,6 +75,9 @@ module lib2egret.mvc {
             return null;
         }
 
+        /**
+         * 获取主题
+         */
         public getNotification(): NotificationDispatcher {
             let $cell: NotificationDispatcher = this._pool2Notifications.Cell;
             if ($cell)
@@ -65,10 +86,18 @@ module lib2egret.mvc {
             return $cell;
         }
 
+        /**
+         * 将主题放入池子
+         * @param $cell 主题
+         */
         public putNotification($cell: NotificationDispatcher) {
             this._pool2Notifications.put($cell);
         }
 
+        /**
+         * 获取模块中的model代理类
+         * @param $moduleKey 模块id或者引用对象
+         */
         public getProxy4Controller($moduleKey: IController<any> | string): BaseMvcProxy {
             let $definition: IController<any> = this.getDefinition<any>($moduleKey);
             if (this.hasController($definition)) {
@@ -80,8 +109,8 @@ module lib2egret.mvc {
 
         /**
          * 获取一个controller类
-         * @param $moduleKey definition
-         * @param $parent
+         * @param $moduleKey 模块id或者引用对象
+         * @param $notification 主题
          */
         public getController<T>($moduleKey: IController<T> | string, $notification?: NotificationDispatcher): IMvcController<T> {
             let $definition: IController<T> = this.getDefinition<T>($moduleKey);
@@ -96,11 +125,18 @@ module lib2egret.mvc {
             return $controller;
         }
 
-
+        /**
+         * 是否存在此模块
+         * @param $moduleKey $notification
+         */
         public hasController($moduleKey: IController<any>): boolean {
             return this._list2Controllers.containsKey($moduleKey);
         }
 
+        /**
+         * 获取模块中的View
+         * @param $moduleKey 模块id或者引用对象
+         */
         public getView<T>($moduleKey: IController<T> | string): IMvcView<T> {
             let $definition: IController<any> = this.getDefinition<any>($moduleKey);
             if (this.hasController($definition)) {
@@ -110,6 +146,9 @@ module lib2egret.mvc {
             return null;
         }
 
+        /**
+         * @ignore
+         */
         public setModuleRes<T>($moduleKey: string, $loaded: boolean): void {
             let $definition: IController<T> = this.getDefinition<T>($moduleKey);
             if (this._moduleResLoaded.containsKey($definition)) {
@@ -124,6 +163,10 @@ module lib2egret.mvc {
                 }
             }
         }
+
+        /**
+         * @ignore
+         */
         public getModuleRes<T>($moduleKey: string): boolean {
             let $definition: IController<T> = this.getDefinition<T>($moduleKey);
             if (this._moduleResLoaded.containsKey($definition)) {

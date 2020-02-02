@@ -5,6 +5,10 @@ module lib2egret.mvc {
      */
     export class MvcConfMgr extends common.BaseSingle {
         private _root: egret.XML;
+
+        /**
+         * 获取单例对象句柄
+         */
         public static get Instance(): MvcConfMgr {
             if (!MvcConfMgr._instance)
                 MvcConfMgr._instance = new MvcConfMgr();
@@ -29,6 +33,10 @@ module lib2egret.mvc {
             return this._root.children as Array<egret.XML>;
         }
 
+        /**
+         * 获取模块配置
+         * @param $key 模块id
+         */
         public getModulesConf($key: string): egret.XML {
             let $children: Array<egret.XML> = this.RootChildren;
             const $$$errorFun: () => void = (): void => {
@@ -49,6 +57,10 @@ module lib2egret.mvc {
             return null;
         }
 
+        /**
+         * 获取模块中的View配置
+         * @param $moduleConf 模块配置
+         */
         public getViewConf($moduleConf: egret.XML): egret.XML {
             let $children: Array<egret.XML> = $moduleConf.children as Array<egret.XML>;
             const $$$errorFun: () => void = (): void => {

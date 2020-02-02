@@ -4,6 +4,9 @@ module lib2egret.mvc {
      * @author Aonaufly
      */
     export interface IMvcVO<T> extends bind.BindBaseModel {
+        /**
+         * id ， 可以作为Key
+         */
         id?: T;
     }
 }

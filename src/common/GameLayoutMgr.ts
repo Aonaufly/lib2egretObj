@@ -4,6 +4,9 @@ module lib2egret.common {
      * @author Aonaufly
      */
     export class GameLayoutMgr extends BaseSingle {
+        /**
+         * 获取单例对象句柄
+         */
         public static get Instance(): GameLayoutMgr {
             if (!GameLayoutMgr._instance)
                 GameLayoutMgr._instance = new GameLayoutMgr();
@@ -15,6 +18,13 @@ module lib2egret.common {
         private _gameStage: egret.Stage;
         private _designSize: { width: number, height: number };
         private _listLayout: Array<egret.DisplayObjectContainer>;
+
+        /**
+         * 初始化
+         * @param $stage 舞台
+         * @param $designSize 设计尺寸
+         * @param $listLayoutNum 层级数量
+         */
         public init($stage: egret.Stage, $designSize: { width: number, height: number }, $listLayoutNum: number = 5): void {
             this._gameStage = $stage;
             this._designSize = $designSize;
@@ -33,12 +43,25 @@ module lib2egret.common {
                 this._listLayout.push($cell);
             }
         }
+
+        /**
+         * 获取舞台
+         */
         public get GameStage(): egret.Stage {
             return this._gameStage;
         }
+
+        /**
+         * 获取设计尺寸
+         */
         public get DesignSize(): { width: number, height: number } {
             return this._designSize;
         }
+
+        /**
+         * 获取层级
+         * @param $index 层级序号（从0开始）
+         */
         public getLayout($index: number): egret.DisplayObjectContainer {
             if ($index < 0 || $index >= this._listLayout.length) {
                 console.error(`Hierarchy param between 0 ~ ${this._listLayout.length - 1}!`);
@@ -47,6 +70,9 @@ module lib2egret.common {
             return this._listLayout[$index];
         }
 
+        /**
+         * 获取全部层级
+         */
         public get Layouts(): Array<egret.DisplayObjectContainer> {
             return this._listLayout;
         }

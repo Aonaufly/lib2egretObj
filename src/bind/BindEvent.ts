@@ -1,4 +1,7 @@
 module lib2egret.bind {
+    /**
+     * @ignore
+     */
     export class BindEvent<T> extends CustomEvent<T>{
         private static readonly BIND_CMD: string = `BIND_CMD`;
         public static getCMD($attribute: string): string {

@@ -6,6 +6,9 @@ module lib2egret.bind {
         private _modAttribute: string;
         private _callback: ($data: IBindEventData<T>) => void;
 
+        /**
+         * @ignore
+         */
         public bind4Field($subClass: any, $subField: string, $modClass: BindBaseModel, $modAttribute: string, $isInit: boolean = true): void {
             this._subClass = $subClass;
             this._subField = $subField;
@@ -17,6 +20,9 @@ module lib2egret.bind {
             this.listener(true, this._modAttribute);
         }
 
+        /**
+         * @ignore
+         */
         public bind2Callback($callback: ($data: IBindEventData<T>) => void, $modClass: BindBaseModel, $modAttribute: string, $isInit: boolean = true): void {
             this._callback = $callback;
             this._modClass = $modClass;
@@ -51,6 +57,9 @@ module lib2egret.bind {
             }
         }
 
+        /**
+         * @inheritDoc
+         */
         public destroy($callback?: ($params?: any) => void, $params?: any): void {
             this.listener(false, this._modAttribute);
             if (this._subClass) this._subClass = null;

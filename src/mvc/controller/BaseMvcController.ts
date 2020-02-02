@@ -21,11 +21,7 @@ module lib2egret.mvc {
             this.analysis2Conf();
             this.listener2Cmds(true);
         }
-
-        /**
-         * 获取模块XML配置
-         */
-        protected getModuleConf(): egret.XML {
+        private getModuleConf(): egret.XML {
             return MvcConfMgr.Instance.getModulesConf(this._key);
         }
         //解析配置
@@ -59,7 +55,7 @@ module lib2egret.mvc {
          */
         protected abstract callback2Proxy: ($type: string, $data?: any) => void;
 
-        protected loadModuleRespacket($loadingui?: string): void {
+        private loadModuleRespacket($loadingui?: string): void {
             if ($loadingui) {
                 this.loadingHandler(true, $loadingui);
             }
@@ -79,6 +75,11 @@ module lib2egret.mvc {
             }
         }
 
+        /**
+         * 处理LoadingUI
+         * @param $isShow 是否显示loading界面
+         * @param $loadingui loadingUI的引用对象
+         */
         protected loadingHandler($isShow: boolean, $loadingui?: string): void {
             if ($isShow) {
                 if (!this._loadui) {
@@ -139,10 +140,20 @@ module lib2egret.mvc {
                 });
             }
         }
+
+        /**
+         * 处理CMDs监听
+         */
         protected abstract onCmdsHandlers($e: NotificationEvent<any>): void;
 
+        /**
+         * @inheritDoc
+         */
         public abstract open($data?: T, router?: { module: string, type: Array<string> | string, data: JSON }): Promise<void>;
 
+        /**
+         * @inheritDoc
+         */
         public close($destroy: boolean = false): Promise<boolean> {
             if (!$destroy) $destroy = this._closeDestroy;
             return new Promise<boolean>((resolve, reject): void => {
@@ -157,13 +168,23 @@ module lib2egret.mvc {
             });
         }
 
+        /**
+         * @inheritDoc
+         */
         public getNotification(): NotificationDispatcher {
             return this._notification;
         }
+
+        /**
+         * @inheritDoc
+         */
         public getProxy(): BaseMvcProxy {
             return this._proxy;
         }
 
+        /**
+         * @inheritDoc
+         */
         public getView(): IMvcView<T> {
             return this._view;
         }
@@ -173,6 +194,9 @@ module lib2egret.mvc {
          */
         protected abstract callback2View: ($type: string, $data?: any) => void;
 
+        /**
+         * @inheritDoc
+         */
         public destroy($callback?: ($params?: any) => void, $params?: any): void {
             this.listener2Cmds(false);
             if (this._notification) {
@@ -192,6 +216,10 @@ module lib2egret.mvc {
                 }).catch(e => console.log(e));
             }
         }
+
+        /**
+         * @ignore
+         */
         protected static creatView<T>($name: string, $parent: egret.DisplayObjectContainer, $conf: egret.XML, $callback: ($type: string, $data?: any) => void): IMvcView<T> {
             let $vClass: IView<T> = egret.getDefinitionByName($name);
             return new $vClass($parent, $conf, $callback);

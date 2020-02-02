@@ -4,6 +4,9 @@ module lib2egret.common {
      * @author Aonaufly
      */
     export class TimerMgr extends BaseSingle {
+        /**
+         * 获取单例对象句柄
+         */
         public static get Instance(): TimerMgr {
             if (!TimerMgr._instance)
                 TimerMgr._instance = new TimerMgr();

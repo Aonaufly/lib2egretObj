@@ -1,4 +1,8 @@
 module lib2egret.common {
+    /**
+     * 单例基类
+     * @author Aonaufly
+     */
     export abstract class BaseSingle {
         protected static _instance: BaseSingle = null;
         public constructor() {

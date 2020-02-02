@@ -4,6 +4,7 @@ module lib2egret.mvc {
      * @author Aonaufly
      */
     export abstract class BaseEuiView<T> extends eui.Component implements IMvcView<T> {
+        /**开启数据*/
         protected _data: T;
         protected _parent: egret.DisplayObjectContainer;
         protected _mask: egret.Shape;
@@ -45,6 +46,10 @@ module lib2egret.mvc {
                 this._closeCD = +<number>$data[`$closecd`];
             }
         }
+
+        /**
+         * @inheritDoc
+         */
         protected childrenCreated(): void {
             super.childrenCreated();
             this._isInit = true;
@@ -58,11 +63,24 @@ module lib2egret.mvc {
             }
         }
 
+        /**
+         * 监听事件
+         * @param $isAdd 是否添加监听
+         */
         protected abstract listener($isAdd: boolean): void;
+
+        /**
+         * 设置对象最表
+         */
         protected setLo(): void {
             this.x = (this._parent.width - this.width) >> 1;
             this.y = (this._parent.height - this.height) >> 1;
         }
+
+        /**
+         * @inheritDoc
+         * 切勿重写
+         */
         public open($data?: T, $router?: { module: string, type: Array<string> | string, data: JSON }): void {
             if (this._isInit) {
                 this.setUI($data, $router);
@@ -74,7 +92,12 @@ module lib2egret.mvc {
                 }
             }
         }
-        //设置UI
+
+        /**
+         * 设置UI
+         * @param $data 打开数据
+         * @param $router 路由数据
+         */
         protected setUI($data?: T, $router?: { module: string, type: Array<string> | string, data: JSON }): void {
             this._data = $data;
             if (this._mask) {
@@ -98,6 +121,9 @@ module lib2egret.mvc {
             if (!$router) return;
         }
 
+        /**
+         * @inheritDoc
+         */
         public abstract update($type: string, $data?: T, $router?: { module: string, type: Array<string> | string, data: JSON }): Promise<void>;
 
         private startCloseCD: () => void = (): void => {
@@ -114,6 +140,10 @@ module lib2egret.mvc {
          * 倒计时
          */
         protected abstract timer2CloseCD: ($key: string, $cd?: number) => void;
+
+        /**
+         * @inheritDoc
+         */
         public close($destroy: boolean = false): Promise<void> {
             this.listener(false);
             return new Promise<void>((resolve, reject): void => {
@@ -131,13 +161,20 @@ module lib2egret.mvc {
             });
         }
 
+        /**
+         * 关闭触发
+         */
         protected onClosed: ($destroy: boolean) => void = ($destroy: boolean): void => {
             common.CommonTool.remove4Parent(this._mask);
             common.CommonTool.remove4Parent(this);
             common.TimerMgr.Instance.removeBind(egret.getQualifiedClassName(this));
-            $destroy && this.destory();
+            $destroy && this.destroy();
         };
-        public destory($callback?: ($params?: any) => void, $params?: any): void {
+
+        /**
+         * @inheritDoc
+         */
+        public destroy($callback?: ($params?: any) => void, $params?: any): void {
             this._mask = null;
             this._eff = null;
             this._callback = null;

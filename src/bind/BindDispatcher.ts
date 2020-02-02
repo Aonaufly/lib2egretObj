@@ -1,4 +1,7 @@
 module lib2egret.bind {
+    /**
+     * @ignore
+     */
     export class BindDispatcher extends EventTarget {
         private static _instance: BindDispatcher;
         public static get Instance(): BindDispatcher {

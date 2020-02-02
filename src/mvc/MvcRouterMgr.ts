@@ -12,7 +12,7 @@ module lib2egret.mvc {
 
         /**
          * 开启路由
-         * @param $router
+         * @param $router 路由信息
          */
         public openRouter($router: string): void {
             const $routerObj: { module: string, type: Array<string> | string, data: JSON } = this.analysisRouter($router);
