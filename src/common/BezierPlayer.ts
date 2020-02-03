@@ -60,6 +60,7 @@ module lib2egret.common {
             if (this.target)
                 this.target = null;
             this.locations = null;
+            $callback && $callback($params);
         }
     }
 }
