@@ -6,6 +6,11 @@ module lib2egret.common {
     export class BezierPlayer implements IDestroy {
         private target: egret.DisplayObject;
         private locations: Array<{ x: number, y: number }>;
+        private $i: number;
+        private $n: number;
+        private $x: number;
+        private $y: number;
+        private $bezier: number;
         public constructor(target: egret.DisplayObject, locations: Array<{ x: number, y: number }> = null) {
             this.target = target;
             if (locations) {
@@ -28,15 +33,15 @@ module lib2egret.common {
             return 0;
         }
         public set factor(value: number) {
-            let $x: number = 0, $y: number = 0;
-            let $bezier: number;
-            for (let $i: number = 0, $n: number = this.locations.length; $i < $n; $i++) {
-                $bezier = Math.min(Math.pow(1 - value, $n - $i - 1) * Math.pow(value, $i)) * this.calculationC($i, $n);
-                $x += this.locations[$i].x * $bezier;
-                $y += this.locations[$i].y * $bezier;
+            this.$x = 0;
+            this.$y = 0;
+            for (this.$i = 0, this.$n = this.locations.length; this.$i < this.$n; this.$i++) {
+                this.$bezier = Math.min(Math.pow(1 - value, this.$n - this.$i - 1) * Math.pow(value, this.$i)) * this.calculationC(this.$i, this.$n);
+                this.$x += this.locations[this.$i].x * this.$bezier;
+                this.$y += this.locations[this.$i].y * this.$bezier;
             }
-            this.target.x = $x;
-            this.target.y = $y;
+            this.target.x = this.$x;
+            this.target.y = this.$y;
         }
 
         private calculationC: ($i: number, $n: number) => number = ($i, $n): number => {
