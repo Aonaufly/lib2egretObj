@@ -35,9 +35,9 @@ module lib2egret.mvc {
             $controller.open($data, $router);
         }
 
-        private getDefinition<T>($moduleKey: IController<T> | string): IController<T> {
-            if (typeof $moduleKey == `string`) {
-                const $conf: egret.XML = MvcConfMgr.Instance.getModulesConf($moduleKey as string);
+        private getDefinition<T>($moduleKey: IController<T> | string | number): IController<T> {
+            if (typeof $moduleKey == `string` || typeof $moduleKey == `number`) {
+                const $conf: egret.XML = MvcConfMgr.Instance.getModulesConf($moduleKey);
                 return egret.getDefinitionByName(($conf[`$name`] as string).trim());
             }
             else
@@ -46,10 +46,10 @@ module lib2egret.mvc {
 
         /**
          * 关闭模块
-         * @param $moduleKey 模块id或者引用对象
+         * @param $moduleKey 模块id/maincode或者引用对象
          * @param $isDestroy 是否销毁
          */
-        public closeController<T>($moduleKey: IController<T> | string, $isDestroy: boolean = false): Promise<void> {
+        public closeController<T>($moduleKey: IController<T> | string | number, $isDestroy: boolean = false): Promise<void> {
             return new Promise<void>((resolve, reject): void => {
                 let $definition: IController<T> = this.getDefinition<T>($moduleKey);
                 if (this.hasController($definition)) {
@@ -64,9 +64,9 @@ module lib2egret.mvc {
 
         /**
          * 获取模块中的主题
-         * @param $moduleKey 模块id或者引用对象
+         * @param $moduleKey 模块id/maincode或者引用对象
          */
-        public getNotification4Controller($moduleKey: IController<any> | string): NotificationDispatcher {
+        public getNotification4Controller($moduleKey: IController<any> | string | number): NotificationDispatcher {
             let $definition: IController<any> = this.getDefinition<any>($moduleKey);
             if (this.hasController($definition)) {
                 let $controller: IMvcController<any> = this.getController<any>($definition, null);
@@ -96,9 +96,9 @@ module lib2egret.mvc {
 
         /**
          * 获取模块中的model代理类
-         * @param $moduleKey 模块id或者引用对象
+         * @param $moduleKey 模块id/maincode或者引用对象
          */
-        public getProxy4Controller($moduleKey: IController<any> | string): BaseMvcProxy {
+        public getProxy4Controller($moduleKey: IController<any> | string | number): BaseMvcProxy {
             let $definition: IController<any> = this.getDefinition<any>($moduleKey);
             if (this.hasController($definition)) {
                 let $controller: IMvcController<any> = this.getController<any>($definition, null);
@@ -109,10 +109,10 @@ module lib2egret.mvc {
 
         /**
          * 获取一个controller类
-         * @param $moduleKey 模块id或者引用对象
+         * @param $moduleKey 模块id/maincode或者引用对象
          * @param $notification 主题
          */
-        public getController<T>($moduleKey: IController<T> | string, $notification?: NotificationDispatcher): IMvcController<T> {
+        public getController<T>($moduleKey: IController<T> | string | number, $notification?: NotificationDispatcher): IMvcController<T> {
             let $definition: IController<T> = this.getDefinition<T>($moduleKey);
             if (this.hasController($definition))
                 return this._list2Controllers.getValue($definition);
@@ -135,9 +135,9 @@ module lib2egret.mvc {
 
         /**
          * 获取模块中的View
-         * @param $moduleKey 模块id或者引用对象
+         * @param $moduleKey 模块id/maincode或者引用对象
          */
-        public getView<T>($moduleKey: IController<T> | string): IMvcView<T> {
+        public getView<T>($moduleKey: IController<T> | string | number): IMvcView<T> {
             let $definition: IController<any> = this.getDefinition<any>($moduleKey);
             if (this.hasController($definition)) {
                 let $controller: IMvcController<any> = this.getController<any>($definition, null);

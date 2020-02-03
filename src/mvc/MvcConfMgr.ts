@@ -35,9 +35,9 @@ module lib2egret.mvc {
 
         /**
          * 获取模块配置
-         * @param $key 模块id
+         * @param $key 模块id或者maincode
          */
-        public getModulesConf($key: string): egret.XML {
+        public getModulesConf($key: string | number): egret.XML {
             let $children: Array<egret.XML> = this.RootChildren;
             const $$$errorFun: () => void = (): void => {
                 console.warn(`module key: ${$key} no configed!!!`);
@@ -47,10 +47,18 @@ module lib2egret.mvc {
                 return null;
             }
             let $cell: egret.XML;
+            let $isString: boolean = (typeof $key == `string`);
             for (let $i: number = 0, $j: number = $children.length; $i < $j; $i++) {
                 $cell = $children[$i];
-                if ($cell.name == `controller` && $cell[`$id`] == $key) {
-                    return $cell;
+                if ($cell.name == `controller`) {
+                    if ($isString) {
+                        if ($cell[`$id`] == $key)
+                            return $cell;
+                    } else {
+                        if (parseInt($cell[`$maincode`]) == $key) {
+                            return $cell;
+                        }
+                    }
                 }
             }
             $$$errorFun();

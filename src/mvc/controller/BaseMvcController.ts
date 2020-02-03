@@ -7,6 +7,7 @@ module lib2egret.mvc {
         protected _view: IMvcView<any>;
         protected _proxy: BaseMvcProxy;
         protected abstract get _key(): string;
+        protected _maincode: number;
         protected _loadui: common.ILoading;
         protected _parent: egret.DisplayObjectContainer;
         protected _destroyRes: boolean = false;
@@ -28,6 +29,7 @@ module lib2egret.mvc {
         private analysis2Conf(): void {
             const $conf: egret.XML = this.getModuleConf();
             this._viewConf = MvcConfMgr.Instance.getViewConf($conf);
+            this._maincode = parseInt($conf[`$maincode`]);
             const $layoutIndex: number = parseInt($conf[`$layoutIndex`]);
             this._parent = common.GameLayoutMgr.Instance.getLayout($layoutIndex);
             this._closeDestroy = $conf[`$closeDestroy`] && +$conf[`$closeDestroy`] == 1;
