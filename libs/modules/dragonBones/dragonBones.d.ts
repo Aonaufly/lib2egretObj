@@ -2522,8 +2522,8 @@ declare namespace dragonBones {
          */
         additiveBlending: boolean;
         /**
-         * - Whether the animation state has controller over the display property of the slots.
-         * Sometimes blend a animation state does not want it to controller the display properties of the slots,
+         * - Whether the animation state has control over the display property of the slots.
+         * Sometimes blend a animation state does not want it to control the display properties of the slots,
          * especially if other animation state are controlling the display properties of the slots.
          * @default true
          * @version DragonBones 5.0
@@ -3020,7 +3020,7 @@ declare namespace dragonBones {
         static toString(): string;
         private static _onSortSlots(a, b);
         /**
-         * - Whether to inherit the animation controller of the parent armature.
+         * - Whether to inherit the animation control of the parent armature.
          * True to try to have the child armature play an animation with the same name when the parent armature play the animation.
          * @default true
          * @version DragonBones 4.5
@@ -4582,7 +4582,7 @@ declare namespace dragonBones {
          */
         time: number;
         /**
-         * - The play speed, used to controller animation speed-shift play.
+         * - The play speed, used to control animation speed-shift play.
          * [0: Stop play, (0~1): Slow play, 1: Normal play, (1~N): Fast play]
          * @default 1.0
          * @version DragonBones 3.0
@@ -5212,8 +5212,8 @@ declare namespace dragonBones {
          */
         additiveBlending: boolean;
         /**
-         * - Whether the animation state has controller over the display object properties of the slots.
-         * Sometimes blend a animation state does not want it to controller the display object properties of the slots,
+         * - Whether the animation state has control over the display object properties of the slots.
+         * Sometimes blend a animation state does not want it to control the display object properties of the slots,
          * especially if other animation state are controlling the display object properties of the slots.
          * @default true
          * @version DragonBones 5.0

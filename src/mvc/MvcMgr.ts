@@ -37,7 +37,7 @@ module lib2egret.mvc {
 
         private getDefinition<T>($moduleKey: IController<T> | string | number): IController<T> {
             if (typeof $moduleKey == `string` || typeof $moduleKey == `number`) {
-                const $conf: egret.XML = MvcConfMgr.Instance.getModulesConf($moduleKey);
+                const $conf: egret.XML = MvcConfMgr.Instance.getModulesConf(<string | number>$moduleKey);
                 return egret.getDefinitionByName(($conf[`$name`] as string).trim());
             }
             else

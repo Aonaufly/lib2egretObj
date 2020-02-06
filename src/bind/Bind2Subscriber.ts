@@ -41,18 +41,18 @@ module lib2egret.bind {
 
         private listener($isAdd: boolean, $attribute: string): void {
             if ($isAdd) {
-                BindDispatcher.Instance.addEventListener(BindEvent.getCMD($attribute), this.onBindEvent);
+                BindDispatcher.Instance.addEventListener(BindEvent.getCMD($attribute), this.onBindEvent, this);
             } else {
-                BindDispatcher.Instance.removeEventListener(BindEvent.getCMD($attribute), this.onBindEvent);
+                BindDispatcher.Instance.removeEventListener(BindEvent.getCMD($attribute), this.onBindEvent, this);
             }
         }
 
-        private onBindEvent($e: BindEvent<IBindEventData<T>>): void {
-            if ($e.detail.$modelClass == this._modClass) {
+        private onBindEvent($e: BindEvent<T, IBindEventData<T>>): void {
+            if ($e.Data.$modelClass == this._modClass) {
                 if (this._callback) {
-                    this._callback($e.detail);
+                    this._callback($e.Data);
                 } else {
-                    this._subClass[this._subField] = $e.detail.$new;
+                    this._subClass[this._subField] = $e.Data.$new;
                 }
             }
         }

@@ -79,6 +79,7 @@ module lib2egret.common {
          * @returns {Boolean} 是否放入成功
          */
         public put($value: T): Boolean {
+            if (!$value) return false;
             if (this._storageArr.length < this._maxStorage) {
                 this._storageArr.push($value);
                 return true;

@@ -30,5 +30,14 @@ mask：模态窗口 颜色|透明度 ， 无： 不是模态窗口
 
 二：MVC路由
 格式 id:aa-bb[:{a:1,b:"cccc"}]
-city:package-weapon  表示：city模块下，package下的weapon （这个需要具体项目具体约定）
+city:package-weapon  表示：city模块下，view（package下的weapon） （这个需要具体项目具体约定）
 为加强交互 ， 方便配置（link）跳转
+
+#network
+加入 http / socket
+注意如需加密需要实现ICrypto ， 并传入http/socket模块
+socket 模块：
+BaseSocketDistribute ： 用于消息的分配
+BaseSocketPak： 对包进行加解密 ， 并通知SocketMsgMgr
+SocketMgr： socket核心
+SocketMsgMgr： 消息处理（对心跳进行处理）并通知BaseSocketDistribute

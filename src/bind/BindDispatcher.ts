@@ -2,7 +2,7 @@ module lib2egret.bind {
     /**
      * @ignore
      */
-    export class BindDispatcher extends EventTarget {
+    export class BindDispatcher extends egret.EventDispatcher {
         private static _instance: BindDispatcher;
         public static get Instance(): BindDispatcher {
             if (!BindDispatcher._instance)
@@ -13,14 +13,17 @@ module lib2egret.bind {
             super();
         }
         public send<T>($attribute: string, $old: T, $new: T, $modelClass: BindBaseModel, $modelFirst: boolean): void {
-            const $event: BindEvent<IBindEventData<T>> = new BindEvent(BindEvent.getCMD($attribute), {
-                $old: $old,
-                $new: $new,
-                $attribute: $attribute,
-                $modelFirst: $modelFirst,
-                $modelClass: $modelClass
-            });
-            this.dispatchEvent($event);
+            const $cmd: string = BindEvent.getCMD($attribute);
+            if (this.hasEventListener($cmd)) {
+                const $event: BindEvent<T, IBindEventData<T>> = new BindEvent($cmd, {
+                    $old: $old,
+                    $new: $new,
+                    $attribute: $attribute,
+                    $modelFirst: $modelFirst,
+                    $modelClass: $modelClass
+                });
+                this.dispatchEvent($event);
+            }
         }
     }
 

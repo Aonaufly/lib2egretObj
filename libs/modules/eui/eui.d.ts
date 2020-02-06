@@ -3258,7 +3258,7 @@ declare namespace eui {
          */
         private _label;
         /**
-         * Text to appear on the Button controller.
+         * Text to appear on the Button control.
          * @version Egret 2.4
          * @version eui 1.0
          * @platform Web,Native
@@ -3294,7 +3294,7 @@ declare namespace eui {
          */
         private _icon;
         /**
-         * Icon to appear on the Button controller.
+         * Icon to appear on the Button control.
          * @version Egret 2.4
          * @version eui 1.0
          * @platform Web,Native
@@ -4061,13 +4061,13 @@ declare namespace eui {
      * The ListBase class is the base class for list component.
      * It can display items of list as vertical or horizontal such as SELECT of HTML.
      * @event egret.Event.CHANGE Dispatched after the selection has changed.
-     * This event is dispatched when the user interacts with the controller.
+     * This event is dispatched when the user interacts with the control.
      * @event egret.Event.CHANGING Dispatched when the selection is going to change.
      * Calling the <code>preventDefault()</code> method
      * on the event prevents the selection from changing.<p/>
-     * This event is dispatched when the user interacts with the controller.
+     * This event is dispatched when the user interacts with the control.
      *
-     * @event eui.ItemTapEvent.ITEM_TAP dispatched when the user tap an item in the controller.
+     * @event eui.ItemTapEvent.ITEM_TAP dispatched when the user tap an item in the control.
      * @event egret.TouchEvent.TOUCH_CANCEL canceled the touch
      *
      * @version Egret 2.4
@@ -4140,7 +4140,7 @@ declare namespace eui {
          */
         static NO_PROPOSED_SELECTION: number;
         /**
-         * If <code>true</code>, a data item must always be selected in the controller.
+         * If <code>true</code>, a data item must always be selected in the control.
          * If the value is <code>true</code>, the <code>selectedIndex</code> property
          * is always set to a value between 0 and (<code>dataProvider.length</code> - 1).
          * @version Egret 2.4
@@ -4174,8 +4174,8 @@ declare namespace eui {
          *   <li>0 if <code>requireSelection == true</code> and there is at least one item.</li>
          * </ul><p/>
          *
-         * When the user changes the <code>selectedIndex</code> property by interacting with the controller,
-         * the controller dispatches the <code>change</code> and <code>changing</code> events.
+         * When the user changes the <code>selectedIndex</code> property by interacting with the control,
+         * the control dispatches the <code>change</code> and <code>changing</code> events.
          * When you change the value of the <code>selectedIndex</code> property programmatically,
          * it does not dispatches the <code>change</code> and <code>changing</code> events.</p>
          *
@@ -4252,8 +4252,8 @@ declare namespace eui {
          *     and there is at least one item.</li>
          * </ul><p/>
          *
-         * When the user changes the <code>selectedItem</code> property by interacting with the controller,
-         * the controller dispatches the <code>change</code> and <code>changing</code> events.
+         * When the user changes the <code>selectedItem</code> property by interacting with the control,
+         * the control dispatches the <code>change</code> and <code>changing</code> events.
          * When you change the value of the <code>selectedIndex</code> property programmatically,
          * it does not dispatches the <code>change</code> and <code>changing</code> events.</p>
          *
@@ -5367,9 +5367,9 @@ declare namespace eui {
      * by using the <code>selected</code> property.</p>
      *
      * @event egret.Event.CHANGE Dispatched when the <code>selected</code> property
-     * changes for the ToggleButton controller.
+     * changes for the ToggleButton control.
      * This event is dispatched only when the
-     * user interacts with the controller by touching.
+     * user interacts with the control by touching.
      *
      * @state up Button up state
      * @state down Button down state
@@ -6013,7 +6013,7 @@ declare namespace eui.sys {
 }
 declare namespace eui {
     /**
-     * The HSlider (horizontal slider) controller lets users select a value
+     * The HSlider (horizontal slider) control lets users select a value
      * by moving a slider thumb between the end points of the slider track.
      * The current value of the slider is determined by the relative location of the thumb between
      * the end points of the slider, corresponding to the slider's minimum and maximum values.
@@ -6126,7 +6126,7 @@ declare namespace eui {
 }
 declare namespace eui {
     /**
-     * The Image controller lets you show JPEG, PNG, and GIF files
+     * The Image control lets you show JPEG, PNG, and GIF files
      * at runtime. Image inherit Bitmap，so you can set the <code>bitmapData</code> property
      * to show the data. you can also set the <code>source</code> property, Image will auto load
      * and show the url image or the bitmapData.
@@ -7134,7 +7134,7 @@ declare namespace eui {
 }
 declare namespace eui {
     /**
-     * The List controller displays a vertical or horizontal list of items.
+     * The List control displays a vertical or horizontal list of items.
      * The user can select one or more items from the list, depending
      * on the value of the <code>allowMultipleSelection</code> property.
      *
@@ -7596,7 +7596,7 @@ declare namespace eui {
 }
 declare namespace eui {
     /**
-     * The ProgressBar controller provides a visual representation of the progress of a task over time.
+     * The ProgressBar control provides a visual representation of the progress of a task over time.
      *
      * @version Egret 2.4
      * @version eui 1.0
@@ -8421,7 +8421,7 @@ declare namespace eui {
      * called a viewport, and horizontal and vertical scroll bars.
      * The viewport must implement the IViewport interface.
      * <p>The Group components implement the IViewport interface
-     * and can be used as the children of the Scroller controller,
+     * and can be used as the children of the Scroller control,
      * as the following example shows:</p>
      * <pre>
      *       <s:Scroller width="100" height="100">
@@ -8430,7 +8430,7 @@ declare namespace eui {
      *           </s:Group>
      *       </s:Scroller>
      * </pre>
-     * <p>The size of the Image controller is set larger than that of its parent Group container.
+     * <p>The size of the Image control is set larger than that of its parent Group container.
      * By default, the child extends past the boundaries of the parent container.
      * Rather than allow the child to extend past the boundaries of the parent container,
      * the Scroller specifies to clip the child to the boundaries and display scroll bars.</p>
@@ -9104,7 +9104,7 @@ declare namespace eui {
      * One tab can be selected at a time, and the first tab is selected by default.
      * <p>The set of tabs is defined by the <code>dataProvider</code> property.
      * The appearance of each tab is defined by the <code>ItemRenderer</code> class.</p>
-     * <p>You can use the TabBar controller to set the active child of a ViewStack container,
+     * <p>You can use the TabBar control to set the active child of a ViewStack container,
      * as the following example shows:</p>
      * <pre>
      *       <s:TabBar dataProvider="{viewStack}"/>
@@ -9495,7 +9495,7 @@ declare namespace eui {
 }
 declare namespace eui {
     /**
-     * The ToggleSwitch controller defines an on-off controller.
+     * The ToggleSwitch control defines an on-off control.
      *
      * @version Egret 2.4
      * @version eui 1.0
@@ -9587,11 +9587,11 @@ declare namespace eui {
 }
 declare namespace eui {
     /**
-     * The VScrollBar (vertical scrollbar) controller lets you controller
+     * The VScrollBar (vertical scrollbar) control lets you control
      * the portion of data that is displayed when there is too much data
      * to fit vertically in a display area.
      *
-     * <p>Although you can use the VScrollBar controller as a stand-alone controller,
+     * <p>Although you can use the VScrollBar control as a stand-alone control,
      * you usually combine it as part of another group of components to
      * provide scrolling functionality.</p>
      *
@@ -9632,7 +9632,7 @@ declare namespace eui {
 }
 declare namespace eui {
     /**
-     * The VSlider (vertical slider) controller lets users select a value
+     * The VSlider (vertical slider) control lets users select a value
      * by moving a slider thumb between the end points of the slider track.
      * The current value of the slider is determined by the relative location of the thumb between
      * the end points of the slider, corresponding to the slider's minimum and maximum values.
@@ -13691,7 +13691,7 @@ declare namespace eui {
     /**
      * The TileLayout class arranges layout elements in columns and rows
      * of equally-sized cells.
-     * The TileLayout class uses a number of properties that controller orientation,
+     * The TileLayout class uses a number of properties that control orientation,
      * count, size, gap and justification of the columns and the rows
      * as well as element alignment within the cells.
      *
@@ -14541,11 +14541,11 @@ declare namespace eui {
 }
 declare namespace eui {
     /**
-     * The HScrollBar (horizontal scrollbar) controller lets you controller
+     * The HScrollBar (horizontal scrollbar) control lets you control
      * the portion of data that is displayed when there is too much data
      * to fit horizontally in a display area.
      *
-     * <p>Although you can use the HScrollBar controller as a stand-alone controller,
+     * <p>Although you can use the HScrollBar control as a stand-alone control,
      * you usually combine it as part of another group of components to
      * provide scrolling functionality.</p>
      *

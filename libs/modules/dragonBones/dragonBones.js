@@ -7443,7 +7443,7 @@ var dragonBones;
              */
             this.time = 0.0;
             /**
-             * - The play speed, used to controller animation speed-shift play.
+             * - The play speed, used to control animation speed-shift play.
              * [0: Stop play, (0~1): Slow play, 1: Normal play, (1~N): Fast play]
              * @default 1.0
              * @version DragonBones 3.0
