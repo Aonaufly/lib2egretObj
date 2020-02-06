@@ -103,10 +103,16 @@ module lib2egret.network {
             $callback && $callback($params);
         }
 
+        /**
+         * 包头是否解析完毕
+         */
         public get OverHead(): boolean {
             return this._head != null;
         }
 
+        /**
+         * 获取二进制数据
+         */
         public get Bytes(): SByteArray {
             if (this._byte.position != this._byte.length) {
                 this._byte.position = this._byte.length;
