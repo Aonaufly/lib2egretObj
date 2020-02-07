@@ -9,8 +9,6 @@ module lib2egret.network {
         protected _crypto: ICrypto;
         protected _head: HEAD;
         protected _body: BODY;
-        /**头部长度*/
-        protected abstract get HeadLen(): number;
 
         public constructor($byte: SByteArray, $crypto: ICrypto) {
             this._byte = $byte;
