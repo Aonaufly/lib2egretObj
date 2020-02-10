@@ -37,7 +37,7 @@ var lib2egret;
              * @ignore
              */
             SocketDispatcher.prototype.send = function ($type, $data) {
-                if (!this.hasEventListener($type)) {
+                if (this.hasEventListener($type)) {
                     var $event = new network.SocketEvent($type, $data);
                     this.dispatchEvent($event);
                 }

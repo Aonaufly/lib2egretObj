@@ -26,13 +26,22 @@ module lib2egret.common {
          * @param $milliseconds 毫秒
          */
         public start($milliseconds: number): void {
-            if ($milliseconds == null) {
+            if ($milliseconds == null ) {
                 $milliseconds = new Date().getTime();
             }
-            this._milliseconds = $milliseconds;
+            this.correcting2Time($milliseconds);
             this._timer = new egret.Timer(this._DELAY);
             this.listener();
             this._timer.start();
+        }
+
+        /**
+         * 校正时间
+         * @param $milliseconds 毫秒
+         */
+        public correcting2Time( $milliseconds: number ): void{
+            if( $milliseconds == null ) return;
+            this._milliseconds = $milliseconds;
         }
 
         /**
@@ -45,6 +54,7 @@ module lib2egret.common {
          * @param $forceVover 是否强制覆盖已有的CD数据
          */
         public bindCD($key: string, $second: number, $callback: ($key: string, $cd?: number) => void, $isEvery: boolean, $repeatCount: number = 1, $forceVover: boolean = true): void {
+            if( $second == null || $second <= 0 ) return;
             let $cell: ITimerData;
             if (!this.isExist($key)) {
                 $cell = {
@@ -99,6 +109,10 @@ module lib2egret.common {
             return null;
         }
 
+        /**
+         * 是否存在
+         * @param $key
+         */
         public isExist($key: string): boolean {
             if (!this._list || this._list.length == 0) return false;
             let $cell: ITimerData;
@@ -186,6 +200,9 @@ module lib2egret.common {
         }
     }
 
+    /**
+     * @ignore
+     */
     export interface ITimerData {
         //倒计时的key
         $key: string;

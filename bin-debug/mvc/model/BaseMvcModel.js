@@ -19,6 +19,7 @@ var lib2egret;
                 if (this._data) {
                     this._data = null;
                 }
+                $callback && $callback($params);
             };
             return BaseMvcModel;
         }());

@@ -8,7 +8,7 @@ module lib2egret.common {
         private _maxStorage: number = 5;
         private _storageArr: Array<T> = null;
         /**
-         * @param {number} $maxStorage : 最多存储的数量(默认5个)
+         * @param $maxStorage : 最多存储的数量(default:5)
          */
         public constructor($maxStorage: number = 5) {
             if ($maxStorage < 1) {
@@ -21,7 +21,7 @@ module lib2egret.common {
         /**
          * 重新设置池子的最大容量
          * <b style="color:red">注意:当重设置与原值相等或者重设置≤0时,不进行重设操作</b>
-         * @param {number} $max 池子的缓存数量( 需要 > 0 )
+         * @param $max 池子的缓存数量( 需要 > 0 )
          */
         public reset2MaxStorage($max: number): void {
             if (this._maxStorage != $max && $max > 0) {
@@ -44,10 +44,7 @@ module lib2egret.common {
         }
 
         /**
-         * 获得一个空闲的Cell , 如果没有返回null
-         * <b style="color:red">注意:当得到值≠null时,此值已经被设为非free状态,用完之后需要放入池子中,以便下次复用</b>
-         * @returns {T}
-         * @constructor
+         * 获得一个Cell , 如果没有返回null
          */
         public get Cell(): T {
             if (this._storageArr.length == 0) {
@@ -60,8 +57,7 @@ module lib2egret.common {
         /**
          * 加入一个新的值cell
          * <b style="color:red">如果存储已满或$value == null,则不加入返回false</b>
-         * @param {T} $value cell
-         * @returns {Boolean} 是否加入成功
+         * @returns 是否加入成功
          */
         public addNew($value: T): Boolean {
             if (!$value) return false;
@@ -73,10 +69,9 @@ module lib2egret.common {
         }
 
         /**
-         * 重新放回对象池
-         * <b style="color:red">放入失败<返回false>: ①,池子已满(Do-将此值从池子中删除);②,没有在池子中找到此值</b>
-         * @param {T} $value
-         * @returns {Boolean} 是否放入成功
+         * 放回对象池
+         * <b style="color:red">放入失败<返回false>: ,池子已满</b>
+         * @returns 是否放入成功
          */
         public put($value: T): Boolean {
             if (!$value) return false;
@@ -97,8 +92,8 @@ module lib2egret.common {
 
         /**
          * 是否存在Cell
-         * @param {T} $cell
-         * @returns {Boolean}
+         * @param $cell
+         * @returns 是否存在
          */
         public containsValue($cell: T): Boolean {
             if (!this._storageArr || this._storageArr.length == 0 || !$cell) return false;
@@ -113,14 +108,11 @@ module lib2egret.common {
         }
 
         /**
-         * 清除所有Cell
-         * @param {() => void} $callback 回调函数(默认:null)
+         * @inheritDoc
          */
         public clear($callback?: ($params?: any) => void, $params?: any): void {
             this._storageArr.length = 0;
-            if ($callback) {
-                $callback($params);
-            }
+            $callback && $callback($params);
         }
 
         /**
@@ -128,14 +120,11 @@ module lib2egret.common {
          * <b style="color:red">
          *    此方法会调用clear : 调用此方法之前没必要调用clear
          * </b>
-         * @param {() => void} $callback 回调函数(默认:null)
          */
         public destroy($callback?: ($params?: any) => void, $params?: any): void {
             this.clear(null);
             this._storageArr = null;
-            if ($callback) {
-                $callback($params);
-            }
+            $callback && $callback($params);
         }
     }
 }

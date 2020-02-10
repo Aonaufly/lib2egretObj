@@ -1,6 +1,6 @@
 module lib2egret.mvc {
     /**
-     * Mvc路由
+     * Mvc路由管理
      * @author Aonaufly
      */
     export class MvcRouterMgr extends common.BaseSingle {

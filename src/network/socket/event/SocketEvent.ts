@@ -1,7 +1,7 @@
 module lib2egret.network {
     /**
      * Socket基础数据Event
-     * T : 默认{head: HEAD, body: BODY , cell: BaseSocketPak<HEAD,BODY>}
+     * T : default {head: HEAD, body: BODY , cell: BaseSocketPak<HEAD,BODY>}
      * @author Aoanufly
      */
     export class SocketEvent<T> extends egret.Event {
@@ -14,6 +14,11 @@ module lib2egret.network {
         /**socket 返回数据*/
         public static readonly ___SOCKET_DATA: string = `socket_data`;
 
+        /**
+         * @param $type
+         * @param $data
+         * @ignore
+         */
         public constructor($type: string, $data?: T) {
             super($type, true, true, $data);
         }

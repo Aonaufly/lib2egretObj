@@ -34,9 +34,9 @@ module lib2egret.network {
          * 设置对象池的最大存储量
          * <b style="color:red">
          *     可以同步请求的Http数量
-         *     默认存储量 : 3
+         *     默认存储量 : 8
          * </b>
-         * @param {number} $max_store
+         * @param $max_store
          */
         public setMaxStore($max_store: number = 10): void {
             if ($max_store && $max_store >= 1 && $max_store != this._store_max) {

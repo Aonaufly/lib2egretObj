@@ -20,11 +20,11 @@ module lib2egret.common {
          *     注意 : $typeSort排序类型一定要正确
          *     ---------仅支持 : key为String/Number类型的二分查找
          * </b>
-         * @param {Array<Data_sets.IConten2MapHash<K, V>>} $initData 初始值( 默认 : false)
-         * @param {Data_sets.TYPE_SORT} $typeSort 排序类型( 默认 : Data_sets.TYPE_SORT.___ASC___)
-         * @param {boolean} $useBinarySearch 是否使用二分查找( 默认 : false )
-         * @param {boolean} $needSort 如果用二分查找则虚部需要排序( 默认 : false )
-         * @param {boolean} $checkKey 是否检测$initData有重复的Key值<用来检测数据Key重复的错误 , 上线后建议设为false , 以提高性能>( 默认 : false )
+         * @param $initData 初始值( default : false)
+         * @param $typeSort 排序类型( default : Data_sets.TYPE_SORT.___ASC___)
+         * @param $useBinarySearch 是否使用二分查找( default : false )
+         * @param $needSort 如果用二分查找则虚部需要排序( default : false )
+         * @param $checkKey 是否检测$initData有重复的Key值<用来检测数据Key重复的错误 , 上线后建议设为false , 以提高性能>( default : false )
          */
         public constructor($initData: Array<IConten2MapHash<K, V>> = null, $typeSort: TYPE_SORT = TYPE_SORT.___ASC___, $useBinarySearch: boolean = false, $needSort: boolean = false, $checkKey: boolean = false) {
             this._type_sort = $typeSort;
@@ -96,7 +96,7 @@ module lib2egret.common {
 
         /**
          * 重新设置根据Key的排序方式
-         * @param {Data_sets.TYPE_SORT} $value
+         * @param $value 排序方案
          */
         public setType2Sort($value: TYPE_SORT): void {
             if (this._type_sort != $value) {
@@ -109,7 +109,6 @@ module lib2egret.common {
 
         /**
          * 获得本数据集的排序方式(只读)
-         * @returns {Data_sets.TYPE_SORT}
          */
         public get type2Sort(): TYPE_SORT {
             return this._type_sort;
@@ -117,9 +116,8 @@ module lib2egret.common {
 
         /**
          * 比较2个字符串的大小
-         * @param {string} $a
-         * @param {string} $b
-         * @returns {number}
+         * @param $a
+         * @param $b
          */
         private strCompare($a: string, $b: string): number {
             const $a_len: number = $a.length;
@@ -137,8 +135,8 @@ module lib2egret.common {
 
         /**
          * 是否存在此键
-         * @param {K} $key 键值
-         * @returns {boolean} 是否存在
+         * @param $key 键值
+         * @returns 是否存在
          */
         public containsKey($key: K): boolean {
             if (!this._content || this._content.length == 0) return false;
@@ -150,8 +148,8 @@ module lib2egret.common {
          * <b style="color:red">
          *     若没找到,返回-1
          * </b>
-         * @param {K} $key
-         * @returns {number}
+         * @param $key
+         * @returns number
          */
         private getKeyIndex($key: K): number {
             const $all_len: number = this._content.length;
@@ -197,8 +195,8 @@ module lib2egret.common {
 
         /**
          * 是否存在此值
-         * @param {V} $value 值
-         * @returns {boolean} 是否存在
+         * @param $value 值
+         * @returns 是否存在
          */
         public containsValue($value: V): boolean {
             if (!this._content || this._content.length == 0) return false;
@@ -218,10 +216,10 @@ module lib2egret.common {
          * <b style="color:red">
          *     $is_cover只对key已经存在的情况下有效 , 如果为true则会覆盖key值对应的value值
          * </b>
-         * @param {K} $key
-         * @param {V} $value
-         * @param {boolean} $is_cover 当键存在时,是否覆盖值(默认:false)
-         * @returns {number} 数据集长度
+         * @param  $key
+         * @param  $value
+         * @param $is_cover 当键存在时,是否覆盖值(default:false)
+         * @returns  数据集长度
          */
         public add($key: K, $value: V, $is_cover: boolean = false): number {
             if (!$key) {
@@ -399,8 +397,8 @@ module lib2egret.common {
 
         /**
          * 移除一个键值对,并返回值
-         * @param {K} $key
-         * @returns {V}
+         * @param $key
+         * @returns 移除的值
          */
         public remove($key: K): V {
             const $index: number = this.getKeyIndex($key);
@@ -414,7 +412,7 @@ module lib2egret.common {
 
         /**
          * 移除第一个键值对,并返回键值对
-         * @returns {bg2tool.IConten2MapHash<K, V>}
+         * @returns 键值对
          */
         public shift(): IConten2MapHash<K, V> {
             if (this._content.length > 0) {
@@ -426,7 +424,7 @@ module lib2egret.common {
 
         /**
          * 移除最后一个键值对,并返回键值对
-         * @returns {bg2tool.IConten2MapHash<K, V>}
+         * @returns 键值对
          */
         public pop(): IConten2MapHash<K, V> {
             if (this._content.length > 0) {
@@ -438,35 +436,36 @@ module lib2egret.common {
 
 
         /**
-         * 清除数据集
-         * @param {() => void} $callback 回调函数(默认 : null)
+         * @inheritDoc
          */
         public clear($callback?: ($params?: any) => void, $params?: any): void {
             this._content.length = 0;
-            if ($callback) {
-                $callback($params);
-            }
+            $callback && $callback($params);
         }
 
         /**
-         * 复制HashMap
-         * @returns {HashMap<K, V>}
+         * 拷贝
+         * @param $isDeep 是否为深度拷贝
          */
-        public clone(): HashMap<K, V> {
-            let hashMap: HashMap<K, V> = new HashMap<K, V>();
-            hashMap._type_sort = this._type_sort;
-            hashMap._open_binarySearch = this._open_binarySearch;
-            let $cell: IConten2MapHash<K, V> = null;
-            for (let $i: number = 0, $j: number = this._content.length; $i < $j; $i++) {
-                $cell = this._content[$i];
-                hashMap.add($cell._key, $cell._value);
+        public clone( $isDeep: boolean ): HashMap<K, V> {
+            if( !$isDeep ){
+                let hashMap: HashMap<K, V> = new HashMap<K, V>();
+                hashMap._type_sort = this._type_sort;
+                hashMap._open_binarySearch = this._open_binarySearch;
+                let $cell: IConten2MapHash<K, V> = null;
+                for (let $i: number = 0, $j: number = this._content.length; $i < $j; $i++) {
+                    $cell = this._content[$i];
+                    hashMap.add($cell._key, $cell._value);
+                }
+                return hashMap;
+            }else{
+                return DeepCopyTool.toDeepCopy<HashMap<K, V>>(this);
             }
-            return hashMap;
         }
 
         /**
          * 数据集是否为空(只读)
-         * @returns {boolean}
+         * @returns 是否为空集
          */
         public get isEmpty(): boolean {
             return this._content.length == 0;
@@ -474,7 +473,7 @@ module lib2egret.common {
 
         /**
          * 键值对的个数(只读)
-         * @returns {number}
+         * @returns 数据集个数
          */
         public get length(): number {
             return this._content.length;
@@ -482,8 +481,7 @@ module lib2egret.common {
 
         /**
          * 获取键
-         * @param {V} $value
-         * @returns {K}
+         * @param $value
          */
         public getKey($value: V): K {
             let $cell: IConten2MapHash<K, V> = null;
@@ -498,7 +496,6 @@ module lib2egret.common {
 
         /**
          * 获取所有键S
-         * @returns {Array<K>}
          */
         public getKeys(): Array<K> {
             if (this._content.length == 0) return null;
@@ -513,8 +510,7 @@ module lib2egret.common {
 
         /**
          * 获取值
-         * @param {K} $key
-         * @returns {V}
+         * @param $key
          */
         public getValue($key: K): V {
             const $index: number = this.getKeyIndex($key);
@@ -527,7 +523,6 @@ module lib2egret.common {
 
         /**
          * 获取所有值S
-         * @returns {Array<V>}
          */
         public getValues(): Array<V> {
             if (this._content.length == 0) return null;
@@ -545,14 +540,11 @@ module lib2egret.common {
          * <b style="color:red">
          *    此方法会调用clear : 调用此方法之前没必要调用clear
          * </b>
-         * @param {() => void} $callback
          */
         public destroy($callback?: ($params?: any) => void, $params?: any): void {
             this.clear(null);
             this._content = null;
-            if ($callback) {
-                $callback($params);
-            }
+            $callback && $callback($params);
         }
     }
 

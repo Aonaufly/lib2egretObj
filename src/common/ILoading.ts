@@ -16,6 +16,12 @@ module lib2egret.common {
          * @param $destroy 是否销毁
          */
         close($destroy?: boolean): Promise<void>;
+
+        /**
+         * 销毁
+         * @param $callback
+         * @param $params
+         */
         destroy($callback?: ($params?: any) => void, $params?: any): void;
     }
 }

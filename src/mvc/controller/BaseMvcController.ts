@@ -155,6 +155,7 @@ module lib2egret.mvc {
 
         /**
          * @inheritDoc
+         * @param $destroy (default:true)
          */
         public close($destroy: boolean = false): Promise<boolean> {
             if (!$destroy) $destroy = this._closeDestroy;

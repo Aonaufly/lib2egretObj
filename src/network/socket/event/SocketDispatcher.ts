@@ -23,7 +23,7 @@ module lib2egret.network {
          * @ignore
          */
         public send<T>($type: string, $data?: T): void {
-            if (!this.hasEventListener($type)) {
+            if (this.hasEventListener($type)) {
                 let $event: SocketEvent<T> = new SocketEvent($type, $data);
                 this.dispatchEvent($event);
             }

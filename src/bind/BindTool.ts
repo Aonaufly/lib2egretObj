@@ -37,7 +37,7 @@ module lib2egret.bind {
      * @param $field_name 字段名称
      * @param $modelFirst model优先
      */
-    export function set2Bind<T>($field_name: string, $modelFirst: boolean = true) {
+    export function set2Bind<T>($field_name: string, $modelFirst: boolean = true):any {
         return function (target: BindBaseModel, propertyKey: string, descriptor: PropertyDescriptor) {
             return {
                 ...descriptor,

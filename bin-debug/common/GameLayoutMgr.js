@@ -37,7 +37,7 @@ var lib2egret;
              * 初始化
              * @param $stage 舞台
              * @param $designSize 设计尺寸
-             * @param $listLayoutNum 层级数量
+             * @param $listLayoutNum 层级数量(defau:5)
              */
             GameLayoutMgr.prototype.init = function ($stage, $designSize, $listLayoutNum) {
                 if ($listLayoutNum === void 0) { $listLayoutNum = 5; }

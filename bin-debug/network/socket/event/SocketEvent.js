@@ -14,11 +14,16 @@ var lib2egret;
     (function (network) {
         /**
          * Socket基础数据Event
-         * T : 默认{head: HEAD, body: BODY , cell: BaseSocketPak<HEAD,BODY>}
+         * T : default {head: HEAD, body: BODY , cell: BaseSocketPak<HEAD,BODY>}
          * @author Aoanufly
          */
         var SocketEvent = (function (_super) {
             __extends(SocketEvent, _super);
+            /**
+             * @param $type
+             * @param $data
+             * @ignore
+             */
             function SocketEvent($type, $data) {
                 return _super.call(this, $type, true, true, $data) || this;
             }

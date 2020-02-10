@@ -13,7 +13,7 @@ var lib2egret;
     var mvc;
     (function (mvc) {
         /**
-         * Mvc路由
+         * Mvc路由管理
          * @author Aonaufly
          */
         var MvcRouterMgr = (function (_super) {

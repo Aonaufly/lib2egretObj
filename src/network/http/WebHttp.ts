@@ -23,7 +23,7 @@ module lib2egret.network {
         private _crypto: ICrypto = null;
 
         /**
-         * @param {($data: smallLib.IHttpCallBackModel) => void} $callback 回调函数
+         * @param $callback 回调函数
          */
         public constructor($callback: ($data: IHttpCallBackModel) => void) {
             this._callback = $callback;
@@ -245,8 +245,8 @@ module lib2egret.network {
      */
     export enum TYPE_HTTP_CALLBACK {
         /**错误*/
-        _ERROR = 0,
+        _ERROR = 1,
         /**数据返回完毕*/
-        _COMPLETE = 1
+        _COMPLETE = 2
     }
 }

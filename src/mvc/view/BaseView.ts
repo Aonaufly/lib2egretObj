@@ -149,6 +149,7 @@ module lib2egret.mvc {
             this._mask = null;
             this._eff = null;
             this._callback = null;
+            $callback && $callback($params);
         }
     }
 }

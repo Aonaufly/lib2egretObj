@@ -23,7 +23,7 @@ module lib2egret.common {
          * 初始化
          * @param $stage 舞台
          * @param $designSize 设计尺寸
-         * @param $listLayoutNum 层级数量
+         * @param $listLayoutNum 层级数量(defau:5)
          */
         public init($stage: egret.Stage, $designSize: { width: number, height: number }, $listLayoutNum: number = 5): void {
             this._gameStage = $stage;

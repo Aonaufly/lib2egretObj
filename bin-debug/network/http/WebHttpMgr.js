@@ -51,9 +51,9 @@ var lib2egret;
              * 设置对象池的最大存储量
              * <b style="color:red">
              *     可以同步请求的Http数量
-             *     默认存储量 : 3
+             *     默认存储量 : 8
              * </b>
-             * @param {number} $max_store
+             * @param $max_store
              */
             WebHttpMgr.prototype.setMaxStore = function ($max_store) {
                 if ($max_store === void 0) { $max_store = 10; }

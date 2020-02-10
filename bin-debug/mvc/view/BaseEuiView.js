@@ -43,6 +43,9 @@ var lib2egret;
                 $data && _this.analysisParamXml($data);
                 return _this;
             }
+            /**
+             * 解析XML
+             */
             BaseEuiView.prototype.analysisParamXml = function ($data) {
                 var $params;
                 if ($data["$mask"]) {
@@ -87,7 +90,7 @@ var lib2egret;
                 }
             };
             /**
-             * 设置对象最表
+             * 设置对象坐标
              */
             BaseEuiView.prototype.setLo = function () {
                 this.x = (this._parent.width - this.width) >> 1;
@@ -165,6 +168,7 @@ var lib2egret;
                 this._mask = null;
                 this._eff = null;
                 this._callback = null;
+                $callback && $callback($params);
             };
             return BaseEuiView;
         }(eui.Component));

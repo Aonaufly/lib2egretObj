@@ -84,10 +84,19 @@ var lib2egret;
                 if ($milliseconds == null) {
                     $milliseconds = new Date().getTime();
                 }
-                this._milliseconds = $milliseconds;
+                this.correcting2Time($milliseconds);
                 this._timer = new egret.Timer(this._DELAY);
                 this.listener();
                 this._timer.start();
+            };
+            /**
+             * 校正时间
+             * @param $milliseconds 毫秒
+             */
+            TimerMgr.prototype.correcting2Time = function ($milliseconds) {
+                if ($milliseconds == null)
+                    return;
+                this._milliseconds = $milliseconds;
             };
             /**
              * 绑定CD
@@ -101,6 +110,8 @@ var lib2egret;
             TimerMgr.prototype.bindCD = function ($key, $second, $callback, $isEvery, $repeatCount, $forceVover) {
                 if ($repeatCount === void 0) { $repeatCount = 1; }
                 if ($forceVover === void 0) { $forceVover = true; }
+                if ($second == null || $second <= 0)
+                    return;
                 var $cell;
                 if (!this.isExist($key)) {
                     $cell = {
@@ -154,6 +165,10 @@ var lib2egret;
                 }
                 return null;
             };
+            /**
+             * 是否存在
+             * @param $key
+             */
             TimerMgr.prototype.isExist = function ($key) {
                 if (!this._list || this._list.length == 0)
                     return false;

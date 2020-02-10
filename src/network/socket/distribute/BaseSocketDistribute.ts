@@ -1,4 +1,7 @@
 module lib2egret.network {
+    /**
+     * @ignore
+     */
     export interface ISocketDistribute<HEAD extends ISocketHead, BODY> {
         new(): BaseSocketDistribute<HEAD, BODY>;
     }

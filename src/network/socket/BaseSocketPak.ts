@@ -4,7 +4,7 @@ module lib2egret.network {
      * @author Aonaufly
      */
     export abstract class BaseSocketPak<HEAD extends ISocketHead, BODY> implements common.IDestroy {
-        private _byte: SByteArray;
+        protected _byte: SByteArray;
         protected _bodyLen: number;
         protected _crypto: ICrypto;
         protected _head: HEAD;

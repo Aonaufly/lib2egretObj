@@ -5,6 +5,10 @@ var lib2egret;
 (function (lib2egret) {
     var bind;
     (function (bind) {
+        /**
+         * 绑定对象句柄
+         * @author Aonaufly
+         */
         var Bind2Subscriber = (function () {
             function Bind2Subscriber() {
             }
@@ -70,6 +74,7 @@ var lib2egret;
                     this._modClass = null;
                 if (this._callback)
                     this._callback = null;
+                $callback && $callback($params);
             };
             return Bind2Subscriber;
         }());

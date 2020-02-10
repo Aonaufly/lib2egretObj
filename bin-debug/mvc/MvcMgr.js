@@ -102,6 +102,8 @@ var lib2egret;
              * @param $cell 主题
              */
             MvcMgr.prototype.putNotification = function ($cell) {
+                if (!$cell)
+                    return;
                 this._pool2Notifications.put($cell);
             };
             /**

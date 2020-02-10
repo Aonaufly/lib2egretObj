@@ -76,6 +76,9 @@ var lib2egret;
                 $callback && $callback($params);
             };
             Object.defineProperty(BaseSocketPak.prototype, "OverHead", {
+                /**
+                 * 包头是否解析完毕
+                 */
                 get: function () {
                     return this._head != null;
                 },
@@ -83,6 +86,9 @@ var lib2egret;
                 configurable: true
             });
             Object.defineProperty(BaseSocketPak.prototype, "Bytes", {
+                /**
+                 * 获取二进制数据
+                 */
                 get: function () {
                     if (this._byte.position != this._byte.length) {
                         this._byte.position = this._byte.length;

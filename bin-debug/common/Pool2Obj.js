@@ -12,7 +12,7 @@ var lib2egret;
          */
         var Pool2Obj = (function () {
             /**
-             * @param {number} $maxStorage : 最多存储的数量(默认5个)
+             * @param $maxStorage : 最多存储的数量(default:5)
              */
             function Pool2Obj($maxStorage) {
                 if ($maxStorage === void 0) { $maxStorage = 5; }
@@ -27,7 +27,7 @@ var lib2egret;
             /**
              * 重新设置池子的最大容量
              * <b style="color:red">注意:当重设置与原值相等或者重设置≤0时,不进行重设操作</b>
-             * @param {number} $max 池子的缓存数量( 需要 > 0 )
+             * @param $max 池子的缓存数量( 需要 > 0 )
              */
             Pool2Obj.prototype.reset2MaxStorage = function ($max) {
                 if (this._maxStorage != $max && $max > 0) {
@@ -52,10 +52,7 @@ var lib2egret;
             };
             Object.defineProperty(Pool2Obj.prototype, "Cell", {
                 /**
-                 * 获得一个空闲的Cell , 如果没有返回null
-                 * <b style="color:red">注意:当得到值≠null时,此值已经被设为非free状态,用完之后需要放入池子中,以便下次复用</b>
-                 * @returns {T}
-                 * @constructor
+                 * 获得一个Cell , 如果没有返回null
                  */
                 get: function () {
                     if (this._storageArr.length == 0) {
@@ -71,8 +68,7 @@ var lib2egret;
             /**
              * 加入一个新的值cell
              * <b style="color:red">如果存储已满或$value == null,则不加入返回false</b>
-             * @param {T} $value cell
-             * @returns {Boolean} 是否加入成功
+             * @returns 是否加入成功
              */
             Pool2Obj.prototype.addNew = function ($value) {
                 if (!$value)
@@ -83,10 +79,9 @@ var lib2egret;
                 return true;
             };
             /**
-             * 重新放回对象池
-             * <b style="color:red">放入失败<返回false>: ①,池子已满(Do-将此值从池子中删除);②,没有在池子中找到此值</b>
-             * @param {T} $value
-             * @returns {Boolean} 是否放入成功
+             * 放回对象池
+             * <b style="color:red">放入失败<返回false>: ,池子已满</b>
+             * @returns 是否放入成功
              */
             Pool2Obj.prototype.put = function ($value) {
                 if (!$value)
@@ -111,8 +106,8 @@ var lib2egret;
             });
             /**
              * 是否存在Cell
-             * @param {T} $cell
-             * @returns {Boolean}
+             * @param $cell
+             * @returns 是否存在
              */
             Pool2Obj.prototype.containsValue = function ($cell) {
                 if (!this._storageArr || this._storageArr.length == 0 || !$cell)
@@ -127,28 +122,22 @@ var lib2egret;
                 return false;
             };
             /**
-             * 清除所有Cell
-             * @param {() => void} $callback 回调函数(默认:null)
+             * @inheritDoc
              */
             Pool2Obj.prototype.clear = function ($callback, $params) {
                 this._storageArr.length = 0;
-                if ($callback) {
-                    $callback($params);
-                }
+                $callback && $callback($params);
             };
             /**
              * 销毁
              * <b style="color:red">
              *    此方法会调用clear : 调用此方法之前没必要调用clear
              * </b>
-             * @param {() => void} $callback 回调函数(默认:null)
              */
             Pool2Obj.prototype.destroy = function ($callback, $params) {
                 this.clear(null);
                 this._storageArr = null;
-                if ($callback) {
-                    $callback($params);
-                }
+                $callback && $callback($params);
             };
             return Pool2Obj;
         }());

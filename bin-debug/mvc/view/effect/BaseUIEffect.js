@@ -19,6 +19,11 @@ var lib2egret;
                 };
                 this._initMaskAlpha = this._mask.alpha;
             }
+            BaseUIEffect.prototype.destroy = function ($callback, $params) {
+                this._main = null;
+                this._mask = null;
+                $callback && $callback($params);
+            };
             return BaseUIEffect;
         }());
         mvc.BaseUIEffect = BaseUIEffect;

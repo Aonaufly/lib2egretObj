@@ -11,7 +11,7 @@ var lib2egret;
          */
         var WebHttp = (function () {
             /**
-             * @param {($data: smallLib.IHttpCallBackModel) => void} $callback 回调函数
+             * @param $callback 回调函数
              */
             function WebHttp($callback) {
                 var _this = this;
@@ -246,9 +246,9 @@ var lib2egret;
         var TYPE_HTTP_CALLBACK;
         (function (TYPE_HTTP_CALLBACK) {
             /**错误*/
-            TYPE_HTTP_CALLBACK[TYPE_HTTP_CALLBACK["_ERROR"] = 0] = "_ERROR";
+            TYPE_HTTP_CALLBACK[TYPE_HTTP_CALLBACK["_ERROR"] = 1] = "_ERROR";
             /**数据返回完毕*/
-            TYPE_HTTP_CALLBACK[TYPE_HTTP_CALLBACK["_COMPLETE"] = 1] = "_COMPLETE";
+            TYPE_HTTP_CALLBACK[TYPE_HTTP_CALLBACK["_COMPLETE"] = 2] = "_COMPLETE";
         })(TYPE_HTTP_CALLBACK = network.TYPE_HTTP_CALLBACK || (network.TYPE_HTTP_CALLBACK = {}));
     })(network = lib2egret.network || (lib2egret.network = {}));
 })(lib2egret || (lib2egret = {}));

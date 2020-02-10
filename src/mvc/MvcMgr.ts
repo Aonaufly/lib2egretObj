@@ -90,7 +90,8 @@ module lib2egret.mvc {
          * 将主题放入池子
          * @param $cell 主题
          */
-        public putNotification($cell: NotificationDispatcher) {
+        public putNotification($cell: NotificationDispatcher): void {
+            if( !$cell ) return;
             this._pool2Notifications.put($cell);
         }
 

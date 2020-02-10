@@ -34,6 +34,7 @@ var lib2egret;
                 }
                 if (this._callback)
                     this._callback = null;
+                $callback && $callback($params);
             };
             return BaseMvcProxy;
         }());

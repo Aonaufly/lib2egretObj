@@ -22,11 +22,11 @@ var lib2egret;
              *     注意 : $typeSort排序类型一定要正确
              *     ---------仅支持 : key为String/Number类型的二分查找
              * </b>
-             * @param {Array<Data_sets.IConten2MapHash<K, V>>} $initData 初始值( 默认 : false)
-             * @param {Data_sets.TYPE_SORT} $typeSort 排序类型( 默认 : Data_sets.TYPE_SORT.___ASC___)
-             * @param {boolean} $useBinarySearch 是否使用二分查找( 默认 : false )
-             * @param {boolean} $needSort 如果用二分查找则虚部需要排序( 默认 : false )
-             * @param {boolean} $checkKey 是否检测$initData有重复的Key值<用来检测数据Key重复的错误 , 上线后建议设为false , 以提高性能>( 默认 : false )
+             * @param $initData 初始值( default : false)
+             * @param $typeSort 排序类型( default : Data_sets.TYPE_SORT.___ASC___)
+             * @param $useBinarySearch 是否使用二分查找( default : false )
+             * @param $needSort 如果用二分查找则虚部需要排序( default : false )
+             * @param $checkKey 是否检测$initData有重复的Key值<用来检测数据Key重复的错误 , 上线后建议设为false , 以提高性能>( default : false )
              */
             function HashMap($initData, $typeSort, $useBinarySearch, $needSort, $checkKey) {
                 if ($initData === void 0) { $initData = null; }
@@ -107,7 +107,7 @@ var lib2egret;
             };
             /**
              * 重新设置根据Key的排序方式
-             * @param {Data_sets.TYPE_SORT} $value
+             * @param $value 排序方案
              */
             HashMap.prototype.setType2Sort = function ($value) {
                 if (this._type_sort != $value) {
@@ -120,7 +120,6 @@ var lib2egret;
             Object.defineProperty(HashMap.prototype, "type2Sort", {
                 /**
                  * 获得本数据集的排序方式(只读)
-                 * @returns {Data_sets.TYPE_SORT}
                  */
                 get: function () {
                     return this._type_sort;
@@ -130,9 +129,8 @@ var lib2egret;
             });
             /**
              * 比较2个字符串的大小
-             * @param {string} $a
-             * @param {string} $b
-             * @returns {number}
+             * @param $a
+             * @param $b
              */
             HashMap.prototype.strCompare = function ($a, $b) {
                 var $a_len = $a.length;
@@ -149,8 +147,8 @@ var lib2egret;
             };
             /**
              * 是否存在此键
-             * @param {K} $key 键值
-             * @returns {boolean} 是否存在
+             * @param $key 键值
+             * @returns 是否存在
              */
             HashMap.prototype.containsKey = function ($key) {
                 if (!this._content || this._content.length == 0)
@@ -162,8 +160,8 @@ var lib2egret;
              * <b style="color:red">
              *     若没找到,返回-1
              * </b>
-             * @param {K} $key
-             * @returns {number}
+             * @param $key
+             * @returns number
              */
             HashMap.prototype.getKeyIndex = function ($key) {
                 var $all_len = this._content.length;
@@ -212,8 +210,8 @@ var lib2egret;
             };
             /**
              * 是否存在此值
-             * @param {V} $value 值
-             * @returns {boolean} 是否存在
+             * @param $value 值
+             * @returns 是否存在
              */
             HashMap.prototype.containsValue = function ($value) {
                 if (!this._content || this._content.length == 0)
@@ -233,10 +231,10 @@ var lib2egret;
              * <b style="color:red">
              *     $is_cover只对key已经存在的情况下有效 , 如果为true则会覆盖key值对应的value值
              * </b>
-             * @param {K} $key
-             * @param {V} $value
-             * @param {boolean} $is_cover 当键存在时,是否覆盖值(默认:false)
-             * @returns {number} 数据集长度
+             * @param  $key
+             * @param  $value
+             * @param $is_cover 当键存在时,是否覆盖值(default:false)
+             * @returns  数据集长度
              */
             HashMap.prototype.add = function ($key, $value, $is_cover) {
                 if ($is_cover === void 0) { $is_cover = false; }
@@ -394,8 +392,8 @@ var lib2egret;
             };
             /**
              * 移除一个键值对,并返回值
-             * @param {K} $key
-             * @returns {V}
+             * @param $key
+             * @returns 移除的值
              */
             HashMap.prototype.remove = function ($key) {
                 var $index = this.getKeyIndex($key);
@@ -408,7 +406,7 @@ var lib2egret;
             };
             /**
              * 移除第一个键值对,并返回键值对
-             * @returns {bg2tool.IConten2MapHash<K, V>}
+             * @returns 键值对
              */
             HashMap.prototype.shift = function () {
                 if (this._content.length > 0) {
@@ -419,7 +417,7 @@ var lib2egret;
             };
             /**
              * 移除最后一个键值对,并返回键值对
-             * @returns {bg2tool.IConten2MapHash<K, V>}
+             * @returns 键值对
              */
             HashMap.prototype.pop = function () {
                 if (this._content.length > 0) {
@@ -429,34 +427,36 @@ var lib2egret;
                 return null;
             };
             /**
-             * 清除数据集
-             * @param {() => void} $callback 回调函数(默认 : null)
+             * @inheritDoc
              */
             HashMap.prototype.clear = function ($callback, $params) {
                 this._content.length = 0;
-                if ($callback) {
-                    $callback($params);
-                }
+                $callback && $callback($params);
             };
             /**
-             * 复制HashMap
-             * @returns {HashMap<K, V>}
+             * 拷贝
+             * @param $isDeep 是否为深度拷贝
              */
-            HashMap.prototype.clone = function () {
-                var hashMap = new HashMap();
-                hashMap._type_sort = this._type_sort;
-                hashMap._open_binarySearch = this._open_binarySearch;
-                var $cell = null;
-                for (var $i = 0, $j = this._content.length; $i < $j; $i++) {
-                    $cell = this._content[$i];
-                    hashMap.add($cell._key, $cell._value);
+            HashMap.prototype.clone = function ($isDeep) {
+                if (!$isDeep) {
+                    var hashMap = new HashMap();
+                    hashMap._type_sort = this._type_sort;
+                    hashMap._open_binarySearch = this._open_binarySearch;
+                    var $cell = null;
+                    for (var $i = 0, $j = this._content.length; $i < $j; $i++) {
+                        $cell = this._content[$i];
+                        hashMap.add($cell._key, $cell._value);
+                    }
+                    return hashMap;
                 }
-                return hashMap;
+                else {
+                    return common.DeepCopyTool.toDeepCopy(this);
+                }
             };
             Object.defineProperty(HashMap.prototype, "isEmpty", {
                 /**
                  * 数据集是否为空(只读)
-                 * @returns {boolean}
+                 * @returns 是否为空集
                  */
                 get: function () {
                     return this._content.length == 0;
@@ -467,7 +467,7 @@ var lib2egret;
             Object.defineProperty(HashMap.prototype, "length", {
                 /**
                  * 键值对的个数(只读)
-                 * @returns {number}
+                 * @returns 数据集个数
                  */
                 get: function () {
                     return this._content.length;
@@ -477,8 +477,7 @@ var lib2egret;
             });
             /**
              * 获取键
-             * @param {V} $value
-             * @returns {K}
+             * @param $value
              */
             HashMap.prototype.getKey = function ($value) {
                 var $cell = null;
@@ -492,7 +491,6 @@ var lib2egret;
             };
             /**
              * 获取所有键S
-             * @returns {Array<K>}
              */
             HashMap.prototype.getKeys = function () {
                 if (this._content.length == 0)
@@ -507,8 +505,7 @@ var lib2egret;
             };
             /**
              * 获取值
-             * @param {K} $key
-             * @returns {V}
+             * @param $key
              */
             HashMap.prototype.getValue = function ($key) {
                 var $index = this.getKeyIndex($key);
@@ -521,7 +518,6 @@ var lib2egret;
             };
             /**
              * 获取所有值S
-             * @returns {Array<V>}
              */
             HashMap.prototype.getValues = function () {
                 if (this._content.length == 0)
@@ -539,14 +535,11 @@ var lib2egret;
              * <b style="color:red">
              *    此方法会调用clear : 调用此方法之前没必要调用clear
              * </b>
-             * @param {() => void} $callback
              */
             HashMap.prototype.destroy = function ($callback, $params) {
                 this.clear(null);
                 this._content = null;
-                if ($callback) {
-                    $callback($params);
-                }
+                $callback && $callback($params);
             };
             return HashMap;
         }());

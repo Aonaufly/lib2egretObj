@@ -1,4 +1,8 @@
 module lib2egret.bind {
+    /**
+     * 绑定对象句柄
+     * @author Aonaufly
+     */
     export class Bind2Subscriber<T> implements common.IDestroy {
         private _subClass: any;
         private _subField: string;
@@ -65,6 +69,7 @@ module lib2egret.bind {
             if (this._subClass) this._subClass = null;
             if (this._modClass) this._modClass = null;
             if (this._callback) this._callback = null;
+            $callback && $callback($params);
         }
     }
 }

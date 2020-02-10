@@ -11,6 +11,11 @@ module lib2egret.common {
         private $x: number;
         private $y: number;
         private $bezier: number;
+
+        /**
+         * @param target 显示对象
+         * @param locations 坐标点（default:null）
+         */
         public constructor(target: egret.DisplayObject, locations: Array<{ x: number, y: number }> = null) {
             this.target = target;
             if (locations) {
@@ -46,7 +51,7 @@ module lib2egret.common {
 
         private calculationC: ($i: number, $n: number) => number = ($i, $n): number => {
             return this.factorial($n - 1) / (this.factorial($i) * this.factorial($n - 1 - $i));
-        }
+        };
 
         private factorial: (num: number) => number = (num): number => {
             if (num < 0) {

@@ -19,6 +19,10 @@ module lib2egret.mvc {
             this._callback = $callback;
             $data && this.analysisParamXml($data);
         }
+
+        /**
+         * 解析XML
+         */
         protected analysisParamXml($data: egret.XML): void {
             let $params: string;
             if ($data[`$mask`]) {
@@ -70,7 +74,7 @@ module lib2egret.mvc {
         protected abstract listener($isAdd: boolean): void;
 
         /**
-         * 设置对象最表
+         * 设置对象坐标
          */
         protected setLo(): void {
             this.x = (this._parent.width - this.width) >> 1;
@@ -178,6 +182,7 @@ module lib2egret.mvc {
             this._mask = null;
             this._eff = null;
             this._callback = null;
+            $callback && $callback($params);
         }
     }
 }

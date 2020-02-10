@@ -19,6 +19,7 @@
 		"bin-debug/bind/Bind2Subscriber.js",
 		"bin-debug/common/BezierPlayer.js",
 		"bin-debug/common/CommonTool.js",
+		"bin-debug/common/DeepCopyTool.js",
 		"bin-debug/common/GameLayoutMgr.js",
 		"bin-debug/common/HashMap.js",
 		"bin-debug/common/IDestroy.js",

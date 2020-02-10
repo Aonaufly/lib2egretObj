@@ -10,6 +10,10 @@ var lib2egret;
          * @author Aonaufly
          */
         var BezierPlayer = (function () {
+            /**
+             * @param target 显示对象
+             * @param locations 坐标点（default:null）
+             */
             function BezierPlayer(target, locations) {
                 if (locations === void 0) { locations = null; }
                 var _this = this;

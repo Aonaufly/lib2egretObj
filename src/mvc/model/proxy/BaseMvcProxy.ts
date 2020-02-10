@@ -49,6 +49,7 @@ module lib2egret.mvc {
             }
             if (this._callback)
                 this._callback = null;
+            $callback && $callback($params);
         }
     }
 }

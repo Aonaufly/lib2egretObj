@@ -125,6 +125,7 @@ var lib2egret;
             };
             /**
              * @inheritDoc
+             * @param $destroy (default:true)
              */
             BaseMvcController.prototype.close = function ($destroy) {
                 var _this = this;

@@ -130,6 +130,7 @@ var lib2egret;
                 this._mask = null;
                 this._eff = null;
                 this._callback = null;
+                $callback && $callback($params);
             };
             return BaseView;
         }(egret.DisplayObjectContainer));

@@ -23,6 +23,10 @@ module lib2egret.mvc {
 
         public abstract async close($destory: boolean): Promise<boolean>;
 
-        public abstract destroy($callback?: ($params?: any) => void, $params?: any): void;
+        public destroy($callback?: ($params?: any) => void, $params?: any): void{
+            this._main = null;
+            this._mask = null;
+            $callback && $callback($params);
+        }
     }
 }

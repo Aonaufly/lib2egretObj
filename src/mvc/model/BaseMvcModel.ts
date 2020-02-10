@@ -20,6 +20,7 @@ module lib2egret.mvc {
             if (this._data) {
                 this._data = null;
             }
+            $callback && $callback($params);
         }
     }
 }
