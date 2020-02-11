@@ -16,7 +16,7 @@ module lib2egret.mvc {
          * @param $data 开启数据
          * @param router 路由数据
          */
-        open($data?: T, router?: { module: string, type: Array<string> | string, data: JSON }): Promise<void>;
+        open($data?: T, router?: { module: string, type: Array<string> | string, data: JSON }): void;
 
         /**
          * 关闭

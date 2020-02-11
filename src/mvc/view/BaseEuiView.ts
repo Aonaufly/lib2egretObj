@@ -11,8 +11,11 @@ module lib2egret.mvc {
         protected _eff: BaseUIEffect;
         protected _closeCD: number = null;
         protected _isInit: boolean = false;
+        private _effClass: any;
         protected _wait: { data: T, router: { module: string, type: Array<string> | string, data: JSON } } | { noParams: boolean, router: { module: string, type: Array<string> | string, data: JSON } } = null;
         private _callback: ($type: string, $data?: any) => void;
+        private _maskClose: boolean = false;
+        private _size: { w: number, h: number };
         public constructor($parent: egret.DisplayObjectContainer, $data?: egret.XML, $callback?: ($type: string, $data?: any) => void) {
             super();
             this._parent = $parent;
@@ -40,22 +43,49 @@ module lib2egret.mvc {
                 this._mask.graphics.drawRect(0, 0, this._parent.width, this._parent.height);
                 this._mask.graphics.endFill();
                 this._mask.touchEnabled = true;
+                this._maskClose = $data[`$maskClose`] && +<number>$data[`$maskClose`] == 1;
             }
             if ($data[`$effect`]) {
                 $params = ($data[`$effect`] as string).trim();
-                let $eClass: any = egret.getDefinitionByName($params);
-                this._eff = new $eClass(this, this._mask);
+                this._effClass = egret.getDefinitionByName($params);
             }
             if ($data[`$closecd`] && +<number>$data[`$closecd`] > 0) {
                 this._closeCD = +<number>$data[`$closecd`];
             }
+            if ($data[`$size`] && ($data[`$size`] as string).trim().indexOf('|') > 0) {
+                const $arr: Array<string> = ($data[`$size`] as string).trim().split('|');
+                this._size = {
+                    w: parseInt($arr[0]),
+                    h: parseInt($arr[1])
+                };
+            }
         }
-
+        private lister2Mask($isAdd: boolean): void {
+            if (!this._mask || !this._maskClose) return;
+            if ($isAdd) {
+                if (!this._mask.hasEventListener(egret.TouchEvent.TOUCH_TAP))
+                    this._mask.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onMaskHandler, this);
+            } else {
+                if (this._mask.hasEventListener(egret.TouchEvent.TOUCH_TAP))
+                    this._mask.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onMaskHandler, this);
+            }
+        }
+        private onMaskHandler($e: egret.TouchEvent): void {
+            common.CommonTool.unenable2Display($e.target, 200);
+            if (this._callback) {
+                this._callback(`maskClick`, this);
+            }
+        }
         /**
          * @inheritDoc
          */
         protected childrenCreated(): void {
             super.childrenCreated();
+            if (this._size) {
+                this.width = this._size.w;
+                this.height = this._size.h;
+                this._size = null;
+            }
             this._isInit = true;
             if (this._wait != null) {
                 if (this._wait.hasOwnProperty(`noParams`)) {
@@ -77,8 +107,8 @@ module lib2egret.mvc {
          * 设置对象坐标
          */
         protected setLo(): void {
-            this.x = (this._parent.width - this.width) >> 1;
-            this.y = (this._parent.height - this.height) >> 1;
+            this.x = (common.GameLayoutMgr.Instance.GameStage.stageWidth - this.width) >> 1;
+            this.y = (common.GameLayoutMgr.Instance.GameStage.stageHeight - this.height) >> 1;
         }
 
         /**
@@ -108,6 +138,10 @@ module lib2egret.mvc {
                 this._parent.addChild(this._mask);
             }
             this.setLo();
+            if (!this._eff && this._effClass) {
+                this._eff = new this._effClass(this, this._mask);
+                this._effClass = null;
+            }
             if (this._eff) {
                 this._eff.open().then(this.startCloseCD).catch(e => console.log(e));
             } else {
@@ -115,6 +149,7 @@ module lib2egret.mvc {
             }
             this._parent.addChild(this);
             this.goRouter($router);
+            this.lister2Mask(true);
         }
 
         /**
@@ -169,6 +204,7 @@ module lib2egret.mvc {
          * 关闭触发
          */
         protected onClosed: ($destroy: boolean) => void = ($destroy: boolean): void => {
+            this.lister2Mask(false);
             common.CommonTool.remove4Parent(this._mask);
             common.CommonTool.remove4Parent(this);
             common.TimerMgr.Instance.removeBind(egret.getQualifiedClassName(this));

@@ -5,10 +5,10 @@
 一：模块配置如下
 <?xml version="1.0" encoding="UTF-8"?>
 <mvc>
-	<controller maincode="1" layoutIndex="1" id="city" name="aa.xx" proxyName="aa.xx" loading="1" loadingName="aa.xx" destroyRes="1" closeDestroy="1">
-		<view name="aa.xx" effect="aa.xx" closecd="10" mask="0x000000|0.7"/>
-	</controller>
-</mvc>	
+    <controller maincode="1" layoutIndex="0" id="city" name="app.CityController" proxyName="app.CityProxy" loading="1" loadingName="app.Loading_1" destroyRes="1" closeDestroy="1">
+        <view name="app.CityView" effect="app.UIEffectR2C" closecd="10" mask="0x000000|0.7" maskClose="1" size="400|300"/>
+    </controller>
+</mvc>
 需要使用MvcConfMgr.Instance.init2XMLRoot初始化配置
 约定： 1为true 0为false
 aa.xx 均为类对象引用 ， 如 eui.Group
@@ -27,6 +27,8 @@ name： view的引用对象
 effect： view开启/关闭动画特效，需要继承BaseUIEffect基类（无没有特效）
 closecd： 自动关闭时间（以秒为单位）无：不用cd关闭窗口
 mask：模态窗口 颜色|透明度 ， 无： 不是模态窗口
+maskClose：点击mask是否关闭窗口（无/0 ： mask不接收关闭事件）
+size： 窗口的 Width|Height(无：由上端自定义)
 
 二：MVC路由
 格式 id:aa-bb[:{a:1,b:"cccc"}]

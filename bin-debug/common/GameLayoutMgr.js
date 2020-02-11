@@ -50,12 +50,10 @@ var lib2egret;
                 var $cell;
                 for (var $i = 0; $i < $num; $i++) {
                     $cell = new egret.DisplayObjectContainer();
-                    $cell.width = this._gameStage.width;
-                    $cell.height = this._gameStage.height;
-                    $cell.touchEnabled = false;
-                    $cell.touchChildren = true;
-                    this._gameStage.addChildAt($cell, $i);
-                    this._listLayout.push($cell);
+                    $cell.width = this.GameStage.stageWidth;
+                    $cell.height = this.GameStage.stageHeight;
+                    this._gameStage.addChild($cell);
+                    this._listLayout[$i] = $cell;
                 }
             };
             Object.defineProperty(GameLayoutMgr.prototype, "GameStage", {

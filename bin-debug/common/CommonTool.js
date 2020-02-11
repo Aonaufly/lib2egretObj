@@ -37,6 +37,20 @@ var lib2egret;
                     $cell.parent.setChildIndex($cell, $cell.parent.numChildren);
                 }
             };
+            /**
+             * 将对象的触发事件禁用一段事件
+             * @param $cell 显示对象
+             * @param $duration 禁用的事件S（default:200）
+             */
+            CommonTool.unenable2Display = function ($cell, $duration) {
+                if ($duration === void 0) { $duration = 200; }
+                if ($cell && $duration > 0) {
+                    $cell.touchEnabled = false;
+                    egret.setTimeout(function () {
+                        $cell.touchEnabled = true;
+                    }, CommonTool, $duration);
+                }
+            };
             return CommonTool;
         }());
         common.CommonTool = CommonTool;

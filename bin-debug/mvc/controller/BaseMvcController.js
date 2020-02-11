@@ -46,6 +46,16 @@ var lib2egret;
                 var $pClass = egret.getDefinitionByName($conf["$proxyName"]);
                 this._proxy = new $pClass(this.callback2Proxy);
             };
+            Object.defineProperty(BaseMvcController.prototype, "CloseDestroy", {
+                /**
+                 * 关闭后是否销毁
+                 */
+                get: function () {
+                    return this._closeDestroy;
+                },
+                enumerable: true,
+                configurable: true
+            });
             BaseMvcController.prototype.loadModuleRespacket = function ($loadingui) {
                 if ($loadingui) {
                     this.loadingHandler(true, $loadingui);
@@ -96,6 +106,10 @@ var lib2egret;
                         //初始化view
                         this._view = BaseMvcController.creatView(this._viewConf["$name"], this._parent, this._viewConf, this.callback2View);
                         this._viewConf = null;
+                        if (this._wait) {
+                            this.show(this._wait.$data, this._wait.$router);
+                            this._wait = null;
+                        }
                         break;
                     case RES.ResourceEvent.GROUP_PROGRESS:
                         this._loadui.update($e.itemsTotal, $e.itemsLoaded);
@@ -121,6 +135,17 @@ var lib2egret;
                             }
                         }
                     });
+                }
+            };
+            /**
+             * @inheritDoc
+             */
+            BaseMvcController.prototype.open = function ($data, router) {
+                if (this._view) {
+                    this.show($data, router);
+                }
+                else {
+                    this._wait = { $data: $data, $router: router };
                 }
             };
             /**
@@ -161,6 +186,18 @@ var lib2egret;
              */
             BaseMvcController.prototype.getView = function () {
                 return this._view;
+            };
+            /**
+             * 主界面mask点击处理
+             * @param $type
+             * @param $data
+             */
+            BaseMvcController.prototype.viewMaskClick = function ($type, $data) {
+                if ($type != "maskClick" || !$data || $data != this._view) {
+                    return false;
+                }
+                this._view.close(this._closeDestroy);
+                return true;
             };
             /**
              * @inheritDoc

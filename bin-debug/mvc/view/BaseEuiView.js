@@ -23,6 +23,7 @@ var lib2egret;
                 _this._closeCD = null;
                 _this._isInit = false;
                 _this._wait = null;
+                _this._maskClose = false;
                 _this.startCloseCD = function () {
                     _this.listener(true);
                     if (!_this._closeCD)
@@ -33,6 +34,7 @@ var lib2egret;
                  * 关闭触发
                  */
                 _this.onClosed = function ($destroy) {
+                    _this.lister2Mask(false);
                     lib2egret.common.CommonTool.remove4Parent(_this._mask);
                     lib2egret.common.CommonTool.remove4Parent(_this);
                     lib2egret.common.TimerMgr.Instance.removeBind(egret.getQualifiedClassName(_this));
@@ -63,14 +65,39 @@ var lib2egret;
                     this._mask.graphics.drawRect(0, 0, this._parent.width, this._parent.height);
                     this._mask.graphics.endFill();
                     this._mask.touchEnabled = true;
+                    this._maskClose = $data["$maskClose"] && +$data["$maskClose"] == 1;
                 }
                 if ($data["$effect"]) {
                     $params = $data["$effect"].trim();
-                    var $eClass = egret.getDefinitionByName($params);
-                    this._eff = new $eClass(this, this._mask);
+                    this._effClass = egret.getDefinitionByName($params);
                 }
                 if ($data["$closecd"] && +$data["$closecd"] > 0) {
                     this._closeCD = +$data["$closecd"];
+                }
+                if ($data["$size"] && $data["$size"].trim().indexOf('|') > 0) {
+                    var $arr = $data["$size"].trim().split('|');
+                    this._size = {
+                        w: parseInt($arr[0]),
+                        h: parseInt($arr[1])
+                    };
+                }
+            };
+            BaseEuiView.prototype.lister2Mask = function ($isAdd) {
+                if (!this._mask || !this._maskClose)
+                    return;
+                if ($isAdd) {
+                    if (!this._mask.hasEventListener(egret.TouchEvent.TOUCH_TAP))
+                        this._mask.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onMaskHandler, this);
+                }
+                else {
+                    if (this._mask.hasEventListener(egret.TouchEvent.TOUCH_TAP))
+                        this._mask.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onMaskHandler, this);
+                }
+            };
+            BaseEuiView.prototype.onMaskHandler = function ($e) {
+                lib2egret.common.CommonTool.unenable2Display($e.target, 200);
+                if (this._callback) {
+                    this._callback("maskClick", this);
                 }
             };
             /**
@@ -78,6 +105,11 @@ var lib2egret;
              */
             BaseEuiView.prototype.childrenCreated = function () {
                 _super.prototype.childrenCreated.call(this);
+                if (this._size) {
+                    this.width = this._size.w;
+                    this.height = this._size.h;
+                    this._size = null;
+                }
                 this._isInit = true;
                 if (this._wait != null) {
                     if (this._wait.hasOwnProperty("noParams")) {
@@ -93,8 +125,8 @@ var lib2egret;
              * 设置对象坐标
              */
             BaseEuiView.prototype.setLo = function () {
-                this.x = (this._parent.width - this.width) >> 1;
-                this.y = (this._parent.height - this.height) >> 1;
+                this.x = (lib2egret.common.GameLayoutMgr.Instance.GameStage.stageWidth - this.width) >> 1;
+                this.y = (lib2egret.common.GameLayoutMgr.Instance.GameStage.stageHeight - this.height) >> 1;
             };
             /**
              * @inheritDoc
@@ -124,6 +156,10 @@ var lib2egret;
                     this._parent.addChild(this._mask);
                 }
                 this.setLo();
+                if (!this._eff && this._effClass) {
+                    this._eff = new this._effClass(this, this._mask);
+                    this._effClass = null;
+                }
                 if (this._eff) {
                     this._eff.open().then(this.startCloseCD).catch(function (e) { return console.log(e); });
                 }
@@ -132,6 +168,7 @@ var lib2egret;
                 }
                 this._parent.addChild(this);
                 this.goRouter($router);
+                this.lister2Mask(true);
             };
             /**
              * 走路由

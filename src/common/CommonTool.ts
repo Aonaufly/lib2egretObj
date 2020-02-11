@@ -31,5 +31,18 @@ module lib2egret.common {
                 $cell.parent.setChildIndex($cell, $cell.parent.numChildren);
             }
         }
+        /**
+         * 将对象的触发事件禁用一段事件
+         * @param $cell 显示对象
+         * @param $duration 禁用的事件S（default:200）
+         */
+        public static unenable2Display( $cell: egret.DisplayObject , $duration: number = 200 ): void{
+            if( $cell && $duration > 0 ){
+                $cell.touchEnabled = false;
+                egret.setTimeout( (): void=>{
+                    $cell.touchEnabled = true;
+                },CommonTool,$duration );
+            }
+        }
     }
 }

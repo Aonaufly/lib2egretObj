@@ -3,8 +3,8 @@ module lib2egret.mvc {
      * controller基类
      * @author Aonaufly
      */
-    export abstract class BaseMvcController<T> implements IMvcController<T> {
-        protected _view: IMvcView<any>;
+    export abstract class BaseMvcController<T, V extends IMvcView<any>> implements IMvcController<T> {
+        protected _view: V;
         protected _proxy: BaseMvcProxy;
         protected abstract get _key(): string;
         protected _maincode: number;
@@ -14,6 +14,7 @@ module lib2egret.mvc {
         protected _notification: NotificationDispatcher;
         private _closeDestroy: boolean = false;
         private _viewConf: egret.XML;
+        protected _wait: { $data: T, $router?: { module: string, type: Array<string> | string, data: JSON } };
         public constructor($notification: NotificationDispatcher = null) {
             if ($notification)
                 this._notification = $notification;
@@ -39,7 +40,7 @@ module lib2egret.mvc {
                     ($conf[`$loadingName`] as string).trim() : null;
                 this.loadModuleRespacket($loadingUI);
             } else {
-                this._view = BaseMvcController.creatView<T>(
+                this._view = <V>BaseMvcController.creatView<T>(
                     this._viewConf[`$name`],
                     this._parent,
                     this._viewConf,
@@ -50,6 +51,12 @@ module lib2egret.mvc {
             this._destroyRes = $conf[`$destroyRes`] && +<number>$conf[`$destroyRes`] == 1;
             let $pClass: any = egret.getDefinitionByName($conf[`$proxyName`]);
             this._proxy = new $pClass(this.callback2Proxy);
+        }
+        /**
+         * 关闭后是否销毁
+         */
+        protected get CloseDestroy(): boolean {
+            return this._closeDestroy;
         }
 
         /**
@@ -104,13 +111,17 @@ module lib2egret.mvc {
                     this.lisener2Res(false);
                     this.loadingHandler(false);
                     //初始化view
-                    this._view = BaseMvcController.creatView<T>(
+                    this._view = <V>BaseMvcController.creatView<T>(
                         this._viewConf[`$name`],
                         this._parent,
                         this._viewConf,
                         this.callback2View
                     );
                     this._viewConf = null;
+                    if (this._wait) {
+                        this.show(this._wait.$data, this._wait.$router);
+                        this._wait = null;
+                    }
                     break;
                 case RES.ResourceEvent.GROUP_PROGRESS:
                     this._loadui.update($e.itemsTotal, $e.itemsLoaded);
@@ -151,8 +162,19 @@ module lib2egret.mvc {
         /**
          * @inheritDoc
          */
-        public abstract open($data?: T, router?: { module: string, type: Array<string> | string, data: JSON }): Promise<void>;
-
+        public open($data?: T, router?: { module: string, type: Array<string> | string, data: JSON }): void {
+            if (this._view) {
+                this.show($data, router);
+            } else {
+                this._wait = { $data: $data, $router: router };
+            }
+        }
+        /**
+         * 显示UI
+         * @param $data 初始数据
+         * @param router  路由数据
+         */
+        protected abstract show($data?: T, router?: { module: string, type: Array<string> | string, data: JSON }): void;
         /**
          * @inheritDoc
          * @param $destroy (default:true)
@@ -196,6 +218,18 @@ module lib2egret.mvc {
          * view的callback
          */
         protected abstract callback2View: ($type: string, $data?: any) => void;
+        /**
+         * 主界面mask点击处理
+         * @param $type 
+         * @param $data 
+         */
+        protected viewMaskClick($type: string, $data?: any): boolean {
+            if ($type != `maskClick` || !$data || $data != this._view) {
+                return false;
+            }
+            this._view.close(this._closeDestroy);
+            return true;
+        }
 
         /**
          * @inheritDoc

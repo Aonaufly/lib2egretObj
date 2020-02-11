@@ -21,6 +21,7 @@ var lib2egret;
             function BaseView($parent, $data, $callback) {
                 var _this = _super.call(this) || this;
                 _this._closeCD = null;
+                _this._maskClose = false;
                 _this.startCloseCD = function () {
                     if (!_this._closeCD)
                         return;
@@ -31,6 +32,7 @@ var lib2egret;
                  * @param $destroy 是否销毁
                  */
                 _this.onClosed = function ($destroy) {
+                    _this.lister2Mask(false);
                     lib2egret.common.CommonTool.remove4Parent(_this._mask);
                     lib2egret.common.CommonTool.remove4Parent(_this);
                     lib2egret.common.TimerMgr.Instance.removeBind(egret.getQualifiedClassName(_this));
@@ -59,6 +61,7 @@ var lib2egret;
                     this._mask.graphics.drawRect(0, 0, this._parent.width, this._parent.height);
                     this._mask.graphics.endFill();
                     this._mask.touchEnabled = true;
+                    this._maskClose = $data["$maskClose"] && +$data["$maskClose"] == 1;
                 }
                 if ($data["$effect"]) {
                     $params = $data["$effect"].trim();
@@ -68,13 +71,36 @@ var lib2egret;
                 if ($data["$closecd"] && +$data["$closecd"] > 0) {
                     this._closeCD = +$data["$closecd"];
                 }
+                if ($data["$size"] && $data["$size"].trim().indexOf('|') > 0) {
+                    var $arr = $data["$size"].trim().split('|');
+                    this.width = parseInt($arr[0]);
+                    this.height = parseInt($arr[1]);
+                }
+            };
+            BaseView.prototype.lister2Mask = function ($isAdd) {
+                if (!this._mask || !this._maskClose)
+                    return;
+                if ($isAdd) {
+                    if (!this._mask.hasEventListener(egret.TouchEvent.TOUCH_TAP))
+                        this._mask.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onMaskHandler, this);
+                }
+                else {
+                    if (this._mask.hasEventListener(egret.TouchEvent.TOUCH_TAP))
+                        this._mask.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onMaskHandler, this);
+                }
+            };
+            BaseView.prototype.onMaskHandler = function ($e) {
+                lib2egret.common.CommonTool.unenable2Display($e.target, 200);
+                if (this._callback) {
+                    this._callback("maskClick", this);
+                }
             };
             /**
              * 设置对象的坐标
              */
             BaseView.prototype.setLo = function () {
-                this.x = (this._parent.width - this.width) >> 1;
-                this.y = (this._parent.height - this.height) >> 1;
+                this.x = (lib2egret.common.GameLayoutMgr.Instance.GameStage.stageWidth - this.width) >> 1;
+                this.y = (lib2egret.common.GameLayoutMgr.Instance.GameStage.stageHeight - this.height) >> 1;
             };
             /**
              * @inheritDoc
@@ -94,6 +120,7 @@ var lib2egret;
                 this._parent.addChild(this);
                 this.listener(true);
                 this.goRouter($router);
+                this.lister2Mask(true);
             };
             /**
              * 走路由

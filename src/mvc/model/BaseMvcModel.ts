@@ -3,9 +3,9 @@ module lib2egret.mvc {
      * 数据模型
      * @author Aonaufly
      */
-    export abstract class BaseMvcModel<T> implements common.IDestroy {
+    export abstract class BaseMvcModel<T extends IMvcVO<any>> implements common.IDestroy {
         /**数据VO*/
-        public _data: IMvcVO<T>;
+        public _data: T;
 
         /**
          * 解析数据
