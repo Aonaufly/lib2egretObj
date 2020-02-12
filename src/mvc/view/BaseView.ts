@@ -10,7 +10,7 @@ module lib2egret.mvc {
         protected _mask: egret.Shape;
         protected _eff: BaseUIEffect;
         protected _closeCD: number = null;
-        private _callback: ($type: string, $data?: any) => void;
+        protected _callback: ($type: string, $data?: any) => void;
         private _maskClose: boolean = false;
         public constructor($parent: egret.DisplayObjectContainer, $data?: egret.XML, $callback?: ($type: string, $data?: any) => void) {
             super();

@@ -44,6 +44,9 @@ var lib2egret;
                 enumerable: true,
                 configurable: true
             });
+            /**
+             * 设置加密程序
+             */
             WebHttpMgr.prototype.setCrypto = function ($data) {
                 this._crypto = $data;
             };
@@ -67,8 +70,9 @@ var lib2egret;
              * <b style="color:red">
              *     提供了HTTP跨域请求的功能
              * </b>
+             * @param $tag 标签
              * @param $url 地址
-             * @param $callback 回调函数
+             * @param $sendercallback 回调函数
              * @param $param 参数 <b style="color:red"> 如 const $data : Object = {user_name: this._infoUser.nickName}</b>(默认:null)
              * @param $useCrypto 是否使用加/解密算法
              * @param $isGet 是否为GET模式(默认:true)
@@ -77,7 +81,7 @@ var lib2egret;
              * @param $try_time <b style="color:red">秒 null/≤0 : 使用默认值( 默认 : 0.15 ) </b>
              * @param $isTextContent <b style="color:blue">是否为文本 , 如果不是, 则为二进制ArrayBuffer(默认 : true)</b>
              */
-            WebHttpMgr.prototype.send = function ($tag, $url, $callback, $param, $useCrypto, $isGet, $isTry, $try_count, $try_time, $isTextContent) {
+            WebHttpMgr.prototype.send = function ($tag, $url, $sendercallback, $param, $useCrypto, $isGet, $isTry, $try_count, $try_time, $isTextContent) {
                 if ($param === void 0) { $param = null; }
                 if ($useCrypto === void 0) { $useCrypto = false; }
                 if ($isGet === void 0) { $isGet = true; }
@@ -89,7 +93,7 @@ var lib2egret;
                 if (!$http) {
                     $http = new network.WebHttp(this.callback.bind(this));
                 }
-                $http.start($tag, $url, $callback, $param, $useCrypto ? this._crypto : null, $isGet, $isTry, $try_count, $try_time, $isTextContent);
+                $http.start($tag, $url, $sendercallback, $param, $useCrypto ? this._crypto : null, $isGet, $isTry, $try_count, $try_time, $isTextContent);
             };
             /**
              * WebHttp的回调处理函数

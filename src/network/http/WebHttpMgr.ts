@@ -19,6 +19,9 @@ module lib2egret.network {
         }
         private _pool_http: common.Pool2Obj<WebHttp>;
         private _store_max: number = 8;
+        /**
+         * 设置加密程序
+         */
         public setCrypto($data: ICrypto): void {
             this._crypto = $data;
         }
@@ -50,8 +53,9 @@ module lib2egret.network {
          * <b style="color:red">
          *     提供了HTTP跨域请求的功能
          * </b>
+         * @param $tag 标签
          * @param $url 地址
-         * @param $callback 回调函数
+         * @param $sendercallback 回调函数
          * @param $param 参数 <b style="color:red"> 如 const $data : Object = {user_name: this._infoUser.nickName}</b>(默认:null)
          * @param $useCrypto 是否使用加/解密算法
          * @param $isGet 是否为GET模式(默认:true)
@@ -63,7 +67,7 @@ module lib2egret.network {
         public send(
             $tag: string,
             $url: string,
-            $callback: ($tag: string, $type: TYPE_HTTP_CALLBACK, $data?: string | ArrayBuffer) => void,
+            $sendercallback: ($tag: string, $type: TYPE_HTTP_CALLBACK, $data?: string | ArrayBuffer) => void,
             $param: object = null,
             $useCrypto: boolean = false,
             $isGet: boolean = true,
@@ -76,7 +80,18 @@ module lib2egret.network {
             if (!$http) {
                 $http = new WebHttp(this.callback.bind(this));
             }
-            $http.start($tag, $url, $callback, $param, $useCrypto ? this._crypto : null, $isGet, $isTry, $try_count, $try_time, $isTextContent);
+            $http.start(
+                $tag,
+                $url,
+                $sendercallback,
+                $param,
+                $useCrypto ? this._crypto : null,
+                $isGet,
+                $isTry,
+                $try_count,
+                $try_time,
+                $isTextContent
+            );
         }
 
         /**

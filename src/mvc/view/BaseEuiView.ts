@@ -13,7 +13,7 @@ module lib2egret.mvc {
         protected _isInit: boolean = false;
         private _effClass: any;
         protected _wait: { data: T, router: { module: string, type: Array<string> | string, data: JSON } } | { noParams: boolean, router: { module: string, type: Array<string> | string, data: JSON } } = null;
-        private _callback: ($type: string, $data?: any) => void;
+        protected _callback: ($type: string, $data?: any) => void;
         private _maskClose: boolean = false;
         private _size: { w: number, h: number };
         public constructor($parent: egret.DisplayObjectContainer, $data?: egret.XML, $callback?: ($type: string, $data?: any) => void) {

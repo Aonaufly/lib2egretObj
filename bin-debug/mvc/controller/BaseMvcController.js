@@ -14,13 +14,23 @@ var lib2egret;
                 if ($notification === void 0) { $notification = null; }
                 this._destroyRes = false;
                 this._closeDestroy = false;
+                /**
+                 * 初始化数据请求是否完成（default：false）
+                 */
+                this._initNetWork = false;
                 if ($notification)
                     this._notification = $notification;
                 else
                     this._notification = mvc.MvcMgr.Instance.getNotification();
+                this.init2NetWork();
                 this.analysis2Conf();
                 this.listener2Cmds(true);
             }
+            /**
+             * 处理Http数据
+             */
+            BaseMvcController.prototype.onHttpHandler = function ($tag, $type, $data) { };
+            ;
             BaseMvcController.prototype.getModuleConf = function () {
                 return mvc.MvcConfMgr.Instance.getModulesConf(this._key);
             };
@@ -41,10 +51,23 @@ var lib2egret;
                 else {
                     this._view = BaseMvcController.creatView(this._viewConf["$name"], this._parent, this._viewConf, this.callback2View);
                     this._viewConf = null;
+                    this.check2Init();
                 }
                 this._destroyRes = $conf["$destroyRes"] && +$conf["$destroyRes"] == 1;
                 var $pClass = egret.getDefinitionByName($conf["$proxyName"]);
                 this._proxy = new $pClass(this.callback2Proxy);
+            };
+            /**
+             * 检测初始化是否完成
+             */
+            BaseMvcController.prototype.check2Init = function () {
+                if (this._initNetWork && this._view) {
+                    this.loadingHandler(false);
+                    if (this._wait) {
+                        this.show(this._wait.$data, this._wait.$router);
+                        this._wait = null;
+                    }
+                }
             };
             Object.defineProperty(BaseMvcController.prototype, "CloseDestroy", {
                 /**
@@ -102,14 +125,10 @@ var lib2egret;
                 switch ($e.type) {
                     case RES.ResourceEvent.GROUP_COMPLETE:
                         this.lisener2Res(false);
-                        this.loadingHandler(false);
                         //初始化view
                         this._view = BaseMvcController.creatView(this._viewConf["$name"], this._parent, this._viewConf, this.callback2View);
                         this._viewConf = null;
-                        if (this._wait) {
-                            this.show(this._wait.$data, this._wait.$router);
-                            this._wait = null;
-                        }
+                        this.check2Init();
                         break;
                     case RES.ResourceEvent.GROUP_PROGRESS:
                         this._loadui.update($e.itemsTotal, $e.itemsLoaded);
@@ -141,7 +160,7 @@ var lib2egret;
              * @inheritDoc
              */
             BaseMvcController.prototype.open = function ($data, router) {
-                if (this._view) {
+                if (this._view && this._initNetWork) {
                     this.show($data, router);
                 }
                 else {

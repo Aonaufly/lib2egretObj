@@ -15,17 +15,32 @@ module lib2egret.mvc {
         private _closeDestroy: boolean = false;
         private _viewConf: egret.XML;
         protected _wait: { $data: T, $router?: { module: string, type: Array<string> | string, data: JSON } };
+        /**
+         * 初始化数据请求是否完成（default：false）
+         */
+        protected _initNetWork: boolean = false;
+        /**
+         * 处理Http数据
+         */
+        protected onHttpHandler($tag: string, $type: lib2egret.network.TYPE_HTTP_CALLBACK, $data?: string): void { };
+
+
         public constructor($notification: NotificationDispatcher = null) {
             if ($notification)
                 this._notification = $notification;
             else
                 this._notification = MvcMgr.Instance.getNotification();
+            this.init2NetWork();
             this.analysis2Conf();
             this.listener2Cmds(true);
         }
         private getModuleConf(): egret.XML {
             return MvcConfMgr.Instance.getModulesConf(this._key);
         }
+        /**
+         * 初始化NetWork通讯（拿到初始化信息）
+         */
+        protected abstract init2NetWork(): void;
         //解析配置
         private analysis2Conf(): void {
             const $conf: egret.XML = this.getModuleConf();
@@ -47,10 +62,23 @@ module lib2egret.mvc {
                     this.callback2View
                 );
                 this._viewConf = null;
+                this.check2Init();
             }
             this._destroyRes = $conf[`$destroyRes`] && +<number>$conf[`$destroyRes`] == 1;
             let $pClass: any = egret.getDefinitionByName($conf[`$proxyName`]);
             this._proxy = new $pClass(this.callback2Proxy);
+        }
+        /**
+         * 检测初始化是否完成
+         */
+        protected check2Init(): void {
+            if (this._initNetWork && this._view) {
+                this.loadingHandler(false);
+                if (this._wait) {
+                    this.show(this._wait.$data, this._wait.$router);
+                    this._wait = null;
+                }
+            }
         }
         /**
          * 关闭后是否销毁
@@ -109,7 +137,6 @@ module lib2egret.mvc {
             switch ($e.type) {
                 case RES.ResourceEvent.GROUP_COMPLETE:
                     this.lisener2Res(false);
-                    this.loadingHandler(false);
                     //初始化view
                     this._view = <V>BaseMvcController.creatView<T>(
                         this._viewConf[`$name`],
@@ -118,10 +145,7 @@ module lib2egret.mvc {
                         this.callback2View
                     );
                     this._viewConf = null;
-                    if (this._wait) {
-                        this.show(this._wait.$data, this._wait.$router);
-                        this._wait = null;
-                    }
+                    this.check2Init();
                     break;
                 case RES.ResourceEvent.GROUP_PROGRESS:
                     this._loadui.update($e.itemsTotal, $e.itemsLoaded);
@@ -163,7 +187,7 @@ module lib2egret.mvc {
          * @inheritDoc
          */
         public open($data?: T, router?: { module: string, type: Array<string> | string, data: JSON }): void {
-            if (this._view) {
+            if (this._view && this._initNetWork) {
                 this.show($data, router);
             } else {
                 this._wait = { $data: $data, $router: router };
