@@ -94,7 +94,7 @@ module lib2egret.network {
                     $data = $data.substr(0, $data.length - 1);
                     this._openUrl += $data;
                 } else {
-                    this._openUrl += `data=${this._crypto.encryp($param)}`;
+                    this._openUrl += `data=${this._crypto.encryp(JSON.stringify($param))}`;
                 }
 
             }
@@ -104,7 +104,7 @@ module lib2egret.network {
                 if (!this._crypto) {
                     this._http.send($param);
                 } else {
-                    let $postData: Object = { data: this._crypto.encryp($param) };
+                    let $postData: Object = { data: this._crypto.encryp(JSON.stringify($param)) };
                     this._http.send($postData);
                 }
             } else {
@@ -202,7 +202,7 @@ module lib2egret.network {
                 if (!this._crypto) {
                     this._http.send(this._param);
                 } else {
-                    let $postData: Object = { data: this._crypto.encryp(this._param) };
+                    let $postData: Object = { data: this._crypto.encryp(JSON.stringify(this._param)) };
                     this._http.send($postData);
                 }
             } else {

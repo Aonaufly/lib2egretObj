@@ -3,16 +3,17 @@ module lib2egret.network {
      * Socket数据包基类
      * @author Aonaufly
      */
-    export abstract class BaseSocketPak<HEAD extends ISocketHead, BODY> implements common.IDestroy {
+    export abstract class BaseSocketPak<HEAD extends ISocketHead> implements common.IDestroy {
         protected _byte: SByteArray;
-        protected _bodyLen: number;
         protected _crypto: ICrypto;
         protected _head: HEAD;
-        protected _body: BODY;
+        protected _body: SByteArray;
+        protected _bodyAnalysis: BaseSocketBodyAnalysis<HEAD>;
 
-        public constructor($byte: SByteArray, $crypto: ICrypto) {
+        public constructor($byte: SByteArray,$bodyAnalysis: IBaseSocketBodyAnalysis<HEAD>, $config: egret.XMLNode | JSON ,$crypto: ICrypto) {
             this._byte = $byte;
             this._crypto = $crypto;
+            this._bodyAnalysis = new $bodyAnalysis( $config );
         }
 
         /**
@@ -20,7 +21,6 @@ module lib2egret.network {
          * @param $byte 二进制收据
          */
         public resetByte($byte: SByteArray): void {
-            this._bodyLen = null;
             this._head = null;
             this._body = null;
             this._byte = $byte;
@@ -37,22 +37,31 @@ module lib2egret.network {
                 this.analysisHead();
             }
             if (this.OverHead) {
-                this._byte.position = this._bodyLen;
+                this._byte.position = this.getHeadLen();
                 const $surplusLen: number = this._byte.bytesAvailable;
-                if ($surplusLen >= this._bodyLen) {
+                if ($surplusLen >= this._head._bodyLen) {
                     this.analysisBody();
-                    SocketDispatcher.Instance.send<{ head: HEAD, body: BODY, cell: BaseSocketPak<HEAD, BODY> }>(SocketEvent.___SOCKET_DATA, { head: this._head, body: this._body, cell: this });
-                    if ($surplusLen > this._bodyLen) {
+                    SocketDispatcher.Instance.send<{ head: HEAD, body: SByteArray, cell: BaseSocketPak<HEAD> }>(SocketEvent.___SOCKET_DATA, {
+                        head: this._head,
+                        body: this._body,
+                        cell: this
+                    });
+                    if ($surplusLen > this._head._bodyLen) {
                         let $surplusCell: SByteArray = SocketMgr.Instance.getSBy();
                         $surplusCell.writeBytes(this._byte, this._byte.position);
-                        return { over: true, $surplus: $surplusCell };
+                        return {over: true, $surplus: $surplusCell};
                     } else {
-                        return { over: true };
+                        return {over: true};
                     }
                 }
             }
             return null;
         }
+
+        /**
+         * 获取包头长度
+         */
+        protected abstract getHeadLen(): number;
 
         /**
          * 解析头部数据（接收数据）
@@ -70,14 +79,17 @@ module lib2egret.network {
          * @param $head
          * @param $body
          */
-        public getSendData($head: HEAD, $body: BODY): SByteArray {
-            let $bodyBy: SByteArray = this.unanalysisBody($body);
+        public getSendData<BODY>($head: HEAD, $body: BODY): SByteArray {
+            let $sb: SByteArray = this._bodyAnalysis.execute2Ciphertext<BODY>($head,$body);//先将Body变成二进制
+            let $bodyBy: SByteArray = this.unanalysisBody($sb);
             let $len: number = $bodyBy.length;
             $head._bodyLen = $len;
             let $headBy: SByteArray = this.unanalysisHead($head);
             $headBy.position = $headBy.length;
             $headBy.writeBytes($bodyBy, 0, $bodyBy.length);
             SocketMgr.Instance.put($bodyBy);
+            SocketMgr.Instance.put($sb);
+            $headBy.position = 0;
             return $headBy;
         }
 
@@ -90,7 +102,7 @@ module lib2egret.network {
          * 处理胞体数据（数据发送）
          * @param $body 包体数据
          */
-        protected abstract unanalysisBody($body: BODY): SByteArray;
+        protected abstract unanalysisBody($body: SByteArray): SByteArray;
 
         /**
          * @inheritDoc
@@ -98,6 +110,8 @@ module lib2egret.network {
         public destroy($callback?: ($params?: any) => void, $params?: any): void {
             this._byte = null;
             this._crypto = null;
+            this._bodyAnalysis.destroy();
+            this._bodyAnalysis = null;
             $callback && $callback($params);
         }
 
@@ -119,7 +133,7 @@ module lib2egret.network {
         }
     }
 
-    export interface ISocketPak<HEAD extends ISocketHead, BODY> {
-        new($byte: SByteArray, $crypto: ICrypto): BaseSocketPak<HEAD, BODY>;
+    export interface ISocketPak<HEAD extends ISocketHead> {
+        new($byte: SByteArray,$bodyAnalysis: IBaseSocketBodyAnalysis<HEAD>, $config: egret.XMLNode | JSON ,$crypto: ICrypto): BaseSocketPak<HEAD>;
     }
 }

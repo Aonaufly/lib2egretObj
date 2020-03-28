@@ -8,10 +8,12 @@ module lib2egret.network {
         private _socket: egret.WebSocket;
         private _crypto: ICrypto;
         private _serviceAdd: string;
-        private _pool2Pak: common.Pool2Obj<BaseSocketPak<any, any>>;
+        private _pool2Pak: common.Pool2Obj<BaseSocketPak<any>>;
         private _pool2SBy: common.Pool2Obj<SByteArray>;
-        private _curPak: BaseSocketPak<any, any>;
-        private _pak: ISocketPak<any, any>;
+        private _curPak: BaseSocketPak<any>;
+        private _pak: ISocketPak<any>;
+        private _bodyAnalysis: IBaseSocketBodyAnalysis<any>;
+        private _config: egret.XMLNode | JSON;
 
         /**
          * 获取单例对象句柄
@@ -21,13 +23,15 @@ module lib2egret.network {
                 SocketMgr._instance = new SocketMgr();
             return <SocketMgr>SocketMgr._instance;
         }
+
         private constructor() {
             super();
             this._socket = new egret.WebSocket();
             this._socket.type = egret.WebSocket.TYPE_BINARY;
-            this._pool2Pak = new common.Pool2Obj<BaseSocketPak<any, any>>(4);
+            this._pool2Pak = new common.Pool2Obj<BaseSocketPak<any>>(4);
             this._pool2SBy = new common.Pool2Obj<SByteArray>(4);
         }
+
         private listener($isAdd: boolean): void {
             if ($isAdd) {
                 !this._socket.hasEventListener(egret.ProgressEvent.SOCKET_DATA) && this._socket.addEventListener(egret.ProgressEvent.SOCKET_DATA, this.onReceiveMessage, this);
@@ -77,6 +81,7 @@ module lib2egret.network {
                     break;
             }
         }
+
         private onSocketError($e: egret.IOErrorEvent): void {
             this.listener(false);
             SocketDispatcher.Instance.send<any>(SocketEvent.___SOCKET_ERROR, $e.data);
@@ -106,11 +111,12 @@ module lib2egret.network {
          */
         public send<HEAD extends ISocketHead, BODY>($head: HEAD, $body: BODY): boolean {
             if (this._socket.connected) {
-                const $data: BaseSocketPak<HEAD, BODY> = this.getPak(this.getSBy());
-                $data.getSendData($head, $body);
-                this._socket.writeBytes($data.Bytes, 0, $data.Bytes.bytesAvailable);
+                const $data: BaseSocketPak<HEAD> = this.getPak(this.getSBy());
+                let $sendInfo: SByteArray = $data.getSendData($head, $body);
+                this._socket.writeBytes($sendInfo, 0, $sendInfo.bytesAvailable);
                 this._socket.flush();
                 this.put($data);
+                this.put($sendInfo);
                 return true;
             } else {
                 return false;
@@ -123,11 +129,14 @@ module lib2egret.network {
          * @param $pak 包
          * @param $crypto 加密
          */
-        public init<HEAD extends ISocketHead, BODY>($serviceAdd: string, $pak: ISocketPak<HEAD, BODY>, $crypto: ICrypto = null): void {
+        public init<HEAD extends ISocketHead, BODY>($serviceAdd: string, $pak: ISocketPak<HEAD>, $bodyAnalysis: IBaseSocketBodyAnalysis<HEAD>, $config: egret.XMLNode | JSON, $crypto: ICrypto = null): void {
             this._crypto = $crypto;
             this._pak = $pak;
             this._serviceAdd = $serviceAdd;
+            this._bodyAnalysis = $bodyAnalysis;
+            this._config = $config;
         }
+
         private open(): void {
             this.listener(true);
             if (this._serviceAdd.indexOf(`ws`) > 0) {
@@ -174,10 +183,10 @@ module lib2egret.network {
          * 获取Socket包
          * @param $sby 二进制对象
          */
-        public getPak<HEAD extends ISocketHead, BODY>($sby: SByteArray): BaseSocketPak<HEAD, BODY> {
-            let $cell: BaseSocketPak<HEAD, BODY> = this._pool2Pak.Cell;
+        public getPak<HEAD extends ISocketHead>($sby: SByteArray): BaseSocketPak<HEAD> {
+            let $cell: BaseSocketPak<HEAD> = this._pool2Pak.Cell;
             if (!$cell) {
-                $cell = new this._pak($sby, this._crypto);
+                $cell = new this._pak($sby, this._bodyAnalysis, this._config, this._crypto);
             } else {
                 $cell.resetByte($sby);
             }
@@ -185,10 +194,26 @@ module lib2egret.network {
         }
 
         /**
+         * Body解析器
+         * @constructor
+         */
+        public get BodyAnalysis(): IBaseSocketBodyAnalysis<any> {
+            return this._bodyAnalysis;
+        }
+
+        /**
+         * 数据结构配置
+         * @constructor
+         */
+        public get Config(): egret.XMLNode | JSON {
+            return this._config;
+        }
+
+        /**
          * 放入对象池
          * @param $cell BaseSocketPak<HEAD,BODY> | SByteArray
          */
-        public put<HEAD extends ISocketHead, BODY>($cell: BaseSocketPak<HEAD, BODY> | SByteArray): void {
+        public put<HEAD extends ISocketHead>($cell: BaseSocketPak<HEAD> | SByteArray): void {
             if ($cell instanceof SByteArray) {
                 this._pool2SBy.put($cell);
             } else {

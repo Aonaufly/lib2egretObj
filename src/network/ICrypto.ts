@@ -8,12 +8,12 @@ module lib2egret.network {
          * 加密
          * @param $data
          */
-        encryp($data: egret.ByteArray | Object): string;
+        encryp($data: string | egret.ByteArray): string | egret.ByteArray;
 
         /**
          * 解密
          * @param $data
          */
-        decrypt($data: egret.ByteArray | string): string;
+        decrypt($data: string | egret.ByteArray): string | egret.ByteArray;
     }
 }

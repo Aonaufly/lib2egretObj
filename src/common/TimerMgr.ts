@@ -12,10 +12,12 @@ module lib2egret.common {
                 TimerMgr._instance = new TimerMgr();
             return <TimerMgr>TimerMgr._instance;
         }
+
         private _list: Array<ITimerData>;
         private _timer: egret.Timer;
         private _milliseconds: number;
         private readonly _DELAY: number = 1000;
+
         private constructor() {
             super();
             this._list = [];
@@ -26,7 +28,7 @@ module lib2egret.common {
          * @param $milliseconds 毫秒
          */
         public start($milliseconds: number): void {
-            if ($milliseconds == null ) {
+            if ($milliseconds == null) {
                 $milliseconds = new Date().getTime();
             }
             this.correcting2Time($milliseconds);
@@ -39,8 +41,8 @@ module lib2egret.common {
          * 校正时间
          * @param $milliseconds 毫秒
          */
-        public correcting2Time( $milliseconds: number ): void{
-            if( $milliseconds == null ) return;
+        public correcting2Time($milliseconds: number): void {
+            if ($milliseconds == null) return;
             this._milliseconds = $milliseconds;
         }
 
@@ -54,7 +56,7 @@ module lib2egret.common {
          * @param $forceVover 是否强制覆盖已有的CD数据
          */
         public bindCD($key: string, $second: number, $callback: ($key: string, $cd?: number) => void, $isEvery: boolean, $repeatCount: number = 1, $forceVover: boolean = true): void {
-            if( $second == null || $second <= 0 ) return;
+            if ($second == null || $second <= 0) return;
             let $cell: ITimerData;
             if (!this.isExist($key)) {
                 $cell = {
@@ -91,7 +93,7 @@ module lib2egret.common {
             let $cell: ITimerData;
             for (let $i: number = 0, $j: number = this._list.length; $i < $j; $i++) {
                 $cell = this._list[$i];
-                if ($cell.$key == $key) {
+                if (!$cell || $cell.$key == $key) {
                     this._list.splice($i, 1);
                     break;
                 }
@@ -118,7 +120,7 @@ module lib2egret.common {
             let $cell: ITimerData;
             for (let $i: number = 0, $j: number = this._list.length; $i < $j; $i++) {
                 $cell = this._list[$i];
-                if ($cell.$key == $key) {
+                if (!$cell || $cell.$key == $key) {
                     return true;
                 }
             }
@@ -152,7 +154,7 @@ module lib2egret.common {
                 let $cell: ITimerData;
                 for (let $i: number = 0, $j: number = this._list.length; $i < $j; $i++) {
                     $cell = this._list[$i];
-                    if ($cell.$discard) {
+                    if (!$cell || $cell.$discard) {
                         this._list.splice($i, 1);
                         $i--;
                         $j--;
@@ -177,20 +179,20 @@ module lib2egret.common {
                 if ($cell.$every) {
                     $cell.$callback($cell.$key, $cell.$cd);
                     if ($cell.$repeatCount <= 0 || $cell.$repeatIndex < $cell.$repeatCount) {
-                        resolve({ del: false, cell: $cell });
+                        resolve({del: false, cell: $cell});
                     } else {
-                        resolve({ del: $cell.$cd <= 0, cell: $cell });
+                        resolve({del: $cell.$cd <= 0, cell: $cell});
                     }
                 } else {
                     if ($cell.$cd <= 0) {
                         $cell.$callback($cell.$key);
                         if ($cell.$repeatCount <= 0 || $cell.$repeatIndex < $cell.$repeatCount) {
-                            resolve({ del: false, cell: $cell });
+                            resolve({del: false, cell: $cell});
                         } else {
-                            resolve({ del: true, cell: $cell });
+                            resolve({del: true, cell: $cell});
                         }
                     } else {
-                        resolve({ del: false, cell: $cell });
+                        resolve({del: false, cell: $cell});
                     }
                 }
                 if (($cell.$repeatCount <= 0 || $cell.$repeatIndex < $cell.$repeatCount) && $cell.$cd <= 0) {
