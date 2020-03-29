@@ -43,7 +43,7 @@ module lib2egret.network {
                     let $body: SByteArray = new SByteArray();
                     $body.writeBytes( this._byte, this.getHeadLen(),this._head._bodyLen );
                     $body.position = 0;
-                    this.analysisBody($body);
+                    this.analysisBody($body);//解析出body二进制，通知进一步解析出body的实体并实现分发
                     SocketDispatcher.Instance.send<{ head: HEAD, body: SByteArray, cell: BaseSocketPak<HEAD> }>(SocketEvent.___SOCKET_DATA, {
                         head: this._head,
                         body: this._body,
@@ -84,7 +84,7 @@ module lib2egret.network {
          */
         public getSendData<BODY>($head: HEAD, $body: BODY): SByteArray {
             let $sb: SByteArray = this._bodyAnalysis.execute2Ciphertext<BODY>($head, $body);//先将Body变成二进制
-            let $bodyBy: SByteArray = this.unanalysisBody($sb);
+            let $bodyBy: SByteArray = this.unanalysisBody($sb);//在这里实现了数据的加密等
             let $len: number = $bodyBy.length;
             $head._bodyLen = $len;
             let $headBy: SByteArray = this.unanalysisHead($head);
